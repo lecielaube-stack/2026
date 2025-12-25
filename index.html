@@ -21,7 +21,7 @@ body{
   background:#0e1430;position:sticky;top:0;z-index:10
 }
 .top button{
-  padding:10px 16px;border-radius:999px;
+  padding:10px 14px;border-radius:14px;
   border:1px solid var(--line);
   background:rgba(255,255,255,.05);
   color:#fff;cursor:pointer
@@ -36,23 +36,23 @@ body{
 .wrap{max-width:920px;margin:0 auto;padding:18px}
 .card{
   background:var(--card);border:1px solid var(--line);
-  border-radius:18px;padding:16px;margin-bottom:14px
+  border-radius:18px;padding:14px;margin-bottom:14px
 }
 h1{margin:0 0 6px}
-.sub{color:var(--muted);font-size:14px;margin-bottom:12px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:10px}
 .section-title{font-size:15px;margin-bottom:10px}
 .item{
-  display:flex;gap:10px;align-items:center;
-  padding:12px;border-radius:14px;
+  display:flex;gap:10px;align-items:flex-start;
+  padding:10px;border-radius:12px;
   border:1px solid var(--line);
   margin-bottom:8px;background:rgba(0,0,0,.15)
 }
-input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
 textarea{
   width:100%;min-height:120px;
   background:rgba(0,0,0,.25);
   border:1px solid var(--line);
-  border-radius:14px;padding:12px;color:var(--text)
+  border-radius:12px;padding:10px;color:var(--text)
 }
 .progress{height:10px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
 .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--ok))}
@@ -60,7 +60,7 @@ textarea{
 .kpi .box{
   flex:1;background:rgba(0,0,0,.2);
   border:1px solid var(--line);
-  border-radius:14px;padding:12px
+  border-radius:12px;padding:10px
 }
 .num{font-size:22px;font-weight:800;margin-top:6px}
 </style>
@@ -79,12 +79,12 @@ textarea{
 
 <div class="card">
   <h1>선택과 집중 루틴</h1>
-  <div class="sub">체크 · 메모 · 진행률 자동 저장</div>
+  <div class="sub">체크/일기 자동 저장 · 진행률 계산</div>
 </div>
 
 <div class="card">
   <div class="section-title">🌅 아침</div>
-  <div class="item"><input type="checkbox" data-k="r_medit">명상</div>
+  <div class="item"><input type="checkbox" data-k="r_med">명상</div>
   <div class="item"><input type="checkbox" data-k="r_run">러닝</div>
 </div>
 
@@ -95,14 +95,14 @@ textarea{
 </div>
 
 <div class="card">
-  <div class="section-title">📖 오늘 기록</div>
-  <textarea id="routineMemo" placeholder="오늘의 루틴 기록"></textarea>
+  <div class="section-title">📖 일기</div>
+  <textarea id="routineMemo" placeholder="오늘 기록"></textarea>
 </div>
 
 <div class="card">
   <div class="progress"><div class="bar" id="routineBar"></div></div>
   <div class="kpi">
-    <div class="box">오늘 진행률<div class="num" id="routinePct">0%</div></div>
+    <div class="box">진행률<div class="num" id="routinePct">0%</div></div>
   </div>
 </div>
 
@@ -115,7 +115,7 @@ textarea{
 
 <div class="card">
   <h1>외모 가꾸기 집중</h1>
-  <div class="sub">식단 · 스킨케어 · 바디 · 메모</div>
+  <div class="sub">식단 · 스킨케어 · 바디 · 헬스 · 마인드</div>
 </div>
 
 <div class="card">
@@ -138,7 +138,7 @@ textarea{
 <div class="card">
   <div class="progress"><div class="bar" id="beautyBar"></div></div>
   <div class="kpi">
-    <div class="box">오늘 진행률<div class="num" id="beautyPct">0%</div></div>
+    <div class="box">진행률<div class="num" id="beautyPct">0%</div></div>
   </div>
 </div>
 
@@ -146,41 +146,37 @@ textarea{
 </div>
 
 <script>
-/* 탭 */
-const tabRoutine=document.getElementById("tabRoutine");
-const tabBeauty=document.getElementById("tabBeauty");
+/* ===== 탭 ===== */
+const tabRoutine=tabBeauty=document.getElementById("tabRoutine");
+const tabBeautyBtn=document.getElementById("tabBeauty");
 const routine=document.getElementById("routine");
 const beauty=document.getElementById("beauty");
 
-tabRoutine.onclick=()=>{
-  routine.classList.add("active");
-  beauty.classList.remove("active");
-  tabRoutine.classList.add("active");
-  tabBeauty.classList.remove("active");
-};
-tabBeauty.onclick=()=>{
-  beauty.classList.add("active");
-  routine.classList.remove("active");
-  tabBeauty.classList.add("active");
-  tabRoutine.classList.remove("active");
-};
+tabRoutine.onclick=()=>{routine.classList.add("active");beauty.classList.remove("active");tabRoutine.classList.add("active");tabBeautyBtn.classList.remove("active");}
+tabBeautyBtn.onclick=()=>{beauty.classList.add("active");routine.classList.remove("active");tabBeautyBtn.classList.add("active");tabRoutine.classList.remove("active");}
 
-/* 엔진 */
-function dashboard(prefix,memoId,barId,pctId){
-  const key="dash_"+prefix;
+/* ===== 공통 엔진 ===== */
+function engine(prefix, memoId, barId, pctId){
+  const key=`dashboard_${prefix}`;
   const state=JSON.parse(localStorage.getItem(key)||"{}");
   const boxes=[...document.querySelectorAll(`input[data-k^="${prefix}_"]`)];
   const memo=document.getElementById(memoId);
 
   boxes.forEach(b=>{
     b.checked=!!state[b.dataset.k];
-    b.onchange=()=>{state[b.dataset.k]=b.checked;save();}
+    b.onchange=()=>{
+      state[b.dataset.k]=b.checked;
+      save();
+    };
   });
 
   memo.value=state.memo||"";
   memo.oninput=()=>{state.memo=memo.value;save();};
 
-  function save(){localStorage.setItem(key,JSON.stringify(state));update();}
+  function save(){
+    localStorage.setItem(key,JSON.stringify(state));
+    update();
+  }
   function update(){
     const done=boxes.filter(b=>b.checked).length;
     const pct=Math.round(done/boxes.length*100)||0;
@@ -190,8 +186,8 @@ function dashboard(prefix,memoId,barId,pctId){
   update();
 }
 
-dashboard("r","routineMemo","routineBar","routinePct");
-dashboard("b","beautyMemo","beautyBar","beautyPct");
+engine("r","routineMemo","routineBar","routinePct");
+engine("b","beautyMemo","beautyBar","beautyPct");
 </script>
 
 </body>
