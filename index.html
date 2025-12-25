@@ -158,7 +158,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
 
 <div class="top">
   <button id="tabRoutine" class="tabbtn active" type="button">🗓 루틴</button>
-  <button id="tabBeauty" class="tabbtn" type="button">💄 뷰티</button>
+  <button id="tabBeauty"  class="tabbtn" type="button">💄 뷰티</button>
 </div>
 
 <!-- ========================= 루틴 ========================= -->
@@ -169,7 +169,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="topbar">
         <div>
           <h1>나의 선택과 집중 대시보드</h1>
-          <div class="sub">체크/일기는 자동 저장(날짜별) · 진행률 즉시 반영</div>
+          <div class="sub">체크/일기/인생계획은 자동 저장(날짜별) · 진행률 즉시 반영</div>
           <div class="small">오늘 날짜: <span id="r_dateLabel"></span></div>
         </div>
         <div class="btnrow">
@@ -179,37 +179,28 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="r_am">
       <div class="section-title">🌅 아침 루틴</div>
       <div class="item"><input type="checkbox" data-key="med"><div><b>마음챙김 명상</b><div class="desc">5~10분, 그냥 앉기</div></div></div>
-      <div class="item">
-  <input type="checkbox" data-key="skin_positive">
-  <div>
-    <b>긍정적 생각하기</b>
-    <div class="desc">하루 최소 1번 · 스트레스 ↓ 코르티솔 ↓ 피부 회복</div>
-  </div>
-</div>
+      <div class="item"><input type="checkbox" data-key="mind_positive"><div><b>긍정적 생각하기</b><div class="desc">하루 최소 1번 · 스트레스 ↓</div></div></div>
       <div class="item"><input type="checkbox" data-key="run"><div><b>러닝/빠른 걷기</b><div class="desc">20~40분</div></div></div>
       <div class="item"><input type="checkbox" data-key="strength"><div><b>근력운동 20분</b></div></div>
       <div class="item"><input type="checkbox" data-key="dogwalk"><div><b>강아지 산책</b></div></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="r_pm">
       <div class="section-title">🌙 저녁 루틴</div>
-      <div class="item"><input type="checkbox" data-key="mind_time"><div><b>시간 낭비하지 않기</b><div class="desc">무의식 스크롤 · 의미 없는 소비 차단</div></div></div>
+      <div class="item"><input type="checkbox" data-key="mind_noscroll"><div><b>시간 낭비하지 않기</b><div class="desc">무의식 스크롤 · 의미 없는 소비 차단</div></div></div>
       <div class="item"><input type="checkbox" data-key="mind_clean"><div><b>청소하기</b><div class="desc">공간 정리 · 에너지 정리</div></div></div>
+
       <div class="item"><input type="checkbox" data-key="diet"><div><b>식단 조절</b><div class="desc">적색육/소금물/버터 섭취 의식</div></div></div>
       <div class="item"><input type="checkbox" data-key="save"><div><b>절약: 돈 안 쓰기</b></div></div>
       <div class="item"><input type="checkbox" data-key="simplify"><div><b>생활 단순화: 불필요 1개 삭제</b></div></div>
-      <div class="item">
-  <input type="checkbox" data-key="skin_sleep8">
-  <div>
-    <b>8시간 이상 수면</b>
-    <div class="desc">10시 ~ 6시 · 피부 회복 & 호르몬 밸런스</div>
-  </div>
-</div>
+
+      <div class="item"><input type="checkbox" data-key="sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시 ~ 6시 목표</div></div></div>
+
       <div class="item"><input type="checkbox" data-key="computer"><div><b>컴 가까이 루틴 1회</b><div class="desc">25분 집중 + 기록</div></div></div>
-      <div class="item"><input type="checkbox" data-key="lifeplan"><div><b>인생 계획 10분</b></div></div>
+      <div class="item"><input type="checkbox" data-key="lifeplan10"><div><b>인생 계획 10분</b></div></div>
       <div class="item"><input type="checkbox" data-key="esteem"><div><b>자존감 채우기</b><div class="desc">오늘 잘한 것 1개 적기</div></div></div>
 
       <div class="item"><input type="checkbox" data-key="eng"><div><b>영어 어플 15분</b></div></div>
@@ -218,29 +209,8 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="dogcare"><div><b>강아지 케어</b><div class="desc">양치(매일) / 목욕·위생(필요시)</div></div></div>
     </div>
 
-    <div class="card">
-  <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
-  <textarea id="r_journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
-
-  <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
-    <button id="r_btnDiaryList" type="button">📚 일기 기록 보기</button>
-    <button id="r_btnDiaryExport" type="button">⬇️ 일기 백업(JSON)</button>
-  </div>
-
-  <div id="r_diaryList" style="display:none;"></div>
-</div>
-
-<!-- ✅ 여기부터 인생 계획 카드 -->
-<div class="card">
-  <div class="section-title">🧭 인생 계획 기록 (날짜별 저장)</div>
-  <textarea id="r_lifePlan" placeholder="장기 목표 / 이번 달 목표 / 방향 정리"></textarea>
-
-  <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
-    <button id="r_btnLifePlanSave" type="button">💾 저장</button>
-  </div>
-
-  <div id="r_lifePlanList" style="display:none;"></div>
-</div>
+    <div class="card" id="r_diaryCard">
+      <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
       <textarea id="r_journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
 
       <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
@@ -248,6 +218,18 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
         <button class="btn" id="r_btnDiaryExport" type="button">⬇️ 일기 백업(JSON)</button>
       </div>
       <div id="r_diaryList" style="display:none;"></div>
+    </div>
+
+    <!-- ✅ 인생 계획 카드 (일기 카드 바로 아래) -->
+    <div class="card" id="r_lifePlanCard">
+      <div class="section-title">🧭 인생 계획 기록 (날짜별 저장)</div>
+      <textarea id="r_lifePlan" placeholder="장기 목표 / 이번 달 목표 / 방향 정리"></textarea>
+
+      <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
+        <button class="btn" id="r_btnLifePlanList" type="button">📚 인생 계획 기록 보기</button>
+        <button class="btn" id="r_btnLifePlanExport" type="button">⬇️ 인생 계획 백업(JSON)</button>
+      </div>
+      <div id="r_lifePlanList" style="display:none;"></div>
     </div>
 
     <div class="card">
@@ -258,7 +240,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="r_analyticsCard">
       <div class="row" style="justify-content:space-between">
         <div>
           <div class="section-title" style="margin:0">📈 주/월 진행률</div>
@@ -294,7 +276,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
 
     <footer>
-      ✔ 루틴 체크/일기 데이터는 <b>이 브라우저(LocalStorage)</b>에만 저장됩니다.<br/>
+      ✔ 데이터는 <b>이 브라우저(LocalStorage)</b>에만 저장됩니다.<br/>
       ✔ 폰 바꾸거나 브라우저 데이터 삭제하면 사라질 수 있어요 → “백업(JSON)” 추천.
     </footer>
   </div>
@@ -324,11 +306,14 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div style="height:12px"></div>
       <div class="statlabel">📖 그날의 일기</div>
       <div id="r_dayModalJournal" class="journalview">기록 없음</div>
+
+      <div style="height:12px"></div>
+      <div class="statlabel">🧭 그날의 인생 계획</div>
+      <div id="r_dayModalLifePlan" class="journalview">기록 없음</div>
     </div>
   </div>
 </div>
 
-<!-- ========================= 뷰티 ========================= -->
 <!-- ========================= 뷰티 ========================= -->
 <div id="pageBeauty" class="page">
   <div class="wrap">
@@ -337,7 +322,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="topbar">
         <div>
           <h1>외모 가꾸기 집중 대시보드</h1>
-          <div class="sub">체크/메모 자동 저장(날짜별) · 주/월 통계 자동</div>
+          <div class="sub">체크/메모 자동 저장(날짜별) · 진행률/주·월 통계 자동</div>
           <div class="small">오늘 날짜: <span id="b_dateLabel"></span></div>
         </div>
         <div class="btnrow">
@@ -347,7 +332,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <!-- 식단 -->
     <div class="card" id="b_diet">
       <div class="section-title">🍽 식단</div>
       <div class="item"><input type="checkbox" data-key="diet_redmeat"><div><b>적색육 먹기</b><div class="desc">오늘 섭취 체크(기록용)</div></div></div>
@@ -358,7 +342,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="diet_water"><div><b>물 1~2L 섭취</b></div></div>
     </div>
 
-    <!-- 스킨케어 -->
     <div class="card" id="b_skin">
       <div class="section-title">✨ 스킨케어</div>
       <div class="item"><input type="checkbox" data-key="skin_cleanse"><div><b>매일 세안 & 스킨류 꼼꼼히 바르기</b></div></div>
@@ -367,12 +350,9 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="skin_lifting_week"><div><b>리프팅 디바이스(주 1회)</b><div class="desc">주 1회면 체크(요일 상관없음)</div></div></div>
       <div class="item"><input type="checkbox" data-key="skin_hair_sun"><div><b>일요일 헤어 트리트먼트 하기</b><div class="desc">일요일에만 체크해도 OK</div></div></div>
 
-      <!-- 추가 요청 항목 -->
       <div class="item"><input type="checkbox" data-key="skin_sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시~6시 목표</div></div></div>
-      <div class="item"><input type="checkbox" data-key="skin_selfie10"><div><b>하루 셀카 10장 이상 찍기</b><div class="desc">표정/각도/피부 체크</div></div></div>
     </div>
 
-    <!-- 바디 -->
     <div class="card" id="b_body">
       <div class="section-title">🧴 바디</div>
       <div class="item"><input type="checkbox" data-key="body_lotion"><div><b>바디로션 & 오일 매일 바르기</b></div></div>
@@ -381,7 +361,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="body_head"><div><b>머리 지압 마사지 하기</b></div></div>
     </div>
 
-    <!-- 헬스 -->
     <div class="card" id="b_fit">
       <div class="section-title">🏋️ 헬스</div>
       <div class="item"><input type="checkbox" data-key="fit_stretch"><div><b>스트레칭하기</b></div></div>
@@ -389,21 +368,18 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="fit_cardio"><div><b>유산소 하기</b><div class="desc">자전거 & 마이마운틴 & 조깅</div></div></div>
     </div>
 
-    <!-- 마인드컨트롤 -->
     <div class="card" id="b_mind">
       <div class="section-title">🧠 마인드컨트롤</div>
+      <div class="item"><input type="checkbox" data-key="mind_selfie10"><div><b>하루 셀카 10장 이상 찍기</b><div class="desc">표정/각도/피부 체크</div></div></div>
       <div class="item"><input type="checkbox" data-key="mind_read10"><div><b>책 10분 이상 읽기</b><div class="desc">한달 2권 이상 목표</div></div></div>
       <div class="item"><input type="checkbox" data-key="mind_image"><div><b>내가 되고 싶은 이미지 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_ideal"><div><b>내가 만나고 싶은 이상형 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_future"><div><b>내가 되고 싶은 외모가 되었을 때 무엇을 할지 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_inner"><div><b>외면만큼 내면 키우기</b><div class="desc">독서 & 교양(영상/강의/기사도 OK)</div></div></div>
-
-      <!-- 추가 요청: 여행 -->
       <div class="item"><input type="checkbox" data-key="mind_trip"><div><b>한달에 1~2회 여행가기</b><div class="desc">당일치기/근교/짧은 여행도 OK</div></div></div>
     </div>
 
-    <!-- 메모 -->
-    <div class="card">
+    <div class="card" id="b_memoCard">
       <div class="section-title">📝 오늘 몸상태 메모 (날짜별 저장)</div>
       <textarea id="b_journal" placeholder="예) 컨디션/수면/피부상태/붓기/근육통/기분/식단 만족도 등"></textarea>
 
@@ -414,7 +390,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div id="b_diaryList" style="display:none;"></div>
     </div>
 
-    <!-- 진행률 -->
     <div class="card">
       <div class="progress"><div class="bar" id="b_bar"></div></div>
       <div class="kpi">
@@ -423,7 +398,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <!-- 분석 -->
     <div class="card" id="b_analyticsCard">
       <div class="row" style="justify-content:space-between">
         <div>
@@ -465,7 +439,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </footer>
   </div>
 
-  <!-- 날짜 모달 -->
   <div id="b_dayModalBackdrop" class="modalbackdrop" style="display:none">
     <div class="modal">
       <div class="row" style="justify-content:space-between; align-items:center">
@@ -494,6 +467,8 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
   </div>
 </div>
+
+<script>
 /* ================== 탭 전환 ================== */
 const tabRoutine = document.getElementById("tabRoutine");
 const tabBeauty  = document.getElementById("tabBeauty");
@@ -517,16 +492,14 @@ function showBeauty(){
 tabRoutine.addEventListener("click", showRoutine);
 tabBeauty.addEventListener("click", showBeauty);
 
-/* ============== 공용 유틸 (prefix 기반) ============== */
+/* ============== 공용 대시보드 (prefix 기반) ============== */
 function createDashboard(prefix, storageKey){
-  const $$ = s => Array.from(document.querySelectorAll(s));
-  const $  = s => document.querySelector(s);
-
   const todayKey = () => {
-  const d = new Date();
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // 로컬(한국) 기준으로 맞춤
-  return d.toISOString().slice(0, 10);
-};
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // 로컬(한국) 기준으로 맞춤
+    return d.toISOString().slice(0, 10);
+  };
+
   const pad2 = n => String(n).padStart(2,"0");
   const ymd  = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
   const sameDay = (a,b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
@@ -541,6 +514,7 @@ function createDashboard(prefix, storageKey){
   const state = load();
   if(!state.daily) state.daily = {};
   if(!state.journals) state.journals = {};
+  if(!state.lifePlans) state.lifePlans = {}; // 루틴 전용(있어도 뷰티는 무시)
 
   const T = todayKey();
   if(!state.daily[T]) state.daily[T] = {};
@@ -548,10 +522,11 @@ function createDashboard(prefix, storageKey){
   const dateLabel = document.getElementById(prefix+"_dateLabel");
   if(dateLabel) dateLabel.textContent = T;
 
+  function pageRoot(){
+    return document.getElementById(prefix==="r" ? "pageRoutine" : "pageBeauty");
+  }
   function boxes(){
-    // prefix 페이지 안의 체크만 잡기
-    const page = document.getElementById(prefix==="r" ? "pageRoutine" : "pageBeauty");
-    return Array.from(page.querySelectorAll('input[type=checkbox][data-key]'));
+    return Array.from(pageRoot().querySelectorAll('input[type=checkbox][data-key]'));
   }
   function keysList(){ return boxes().map(b => b.dataset.key); }
 
@@ -560,10 +535,16 @@ function createDashboard(prefix, storageKey){
     const total = b.length;
     const done  = b.filter(x => x.checked).length;
     const pct   = total ? Math.round(done/total*100) : 0;
-    document.getElementById(prefix+"_done").textContent = done;
-    document.getElementById(prefix+"_total").textContent = total;
-    document.getElementById(prefix+"_percent").textContent = pct + "%";
-    document.getElementById(prefix+"_bar").style.width = pct + "%";
+
+    const doneEl = document.getElementById(prefix+"_done");
+    const totEl  = document.getElementById(prefix+"_total");
+    const pctEl  = document.getElementById(prefix+"_percent");
+    const barEl  = document.getElementById(prefix+"_bar");
+
+    if(doneEl) doneEl.textContent = done;
+    if(totEl)  totEl.textContent  = total;
+    if(pctEl)  pctEl.textContent  = pct + "%";
+    if(barEl)  barEl.style.width  = pct + "%";
   }
 
   // 체크박스 바인딩
@@ -580,16 +561,30 @@ function createDashboard(prefix, storageKey){
 
   // 일기/메모
   const journal = document.getElementById(prefix+"_journal");
-  journal.value = state.journals[T] || "";
-  journal.addEventListener("input", ()=>{
-    state.journals[T] = journal.value;
-    save(state);
-  });
+  if(journal){
+    journal.value = state.journals[T] || "";
+    journal.addEventListener("input", ()=>{
+      state.journals[T] = journal.value;
+      save(state);
+    });
+  }
 
-  // 목록
-  function renderDiaryList(){
-    const box = document.getElementById(prefix+"_diaryList");
-    const entries = Object.entries(state.journals || {})
+  // 인생 계획(루틴에만 존재)
+  const lifePlan = document.getElementById(prefix+"_lifePlan");
+  if(lifePlan){
+    lifePlan.value = state.lifePlans[T] || "";
+    lifePlan.addEventListener("input", ()=>{
+      state.lifePlans[T] = lifePlan.value;
+      save(state);
+    });
+  }
+
+  // 목록 렌더 (공용)
+  function renderTextList(targetId, mapObj, kindLabel){
+    const box = document.getElementById(targetId);
+    if(!box) return;
+
+    const entries = Object.entries(mapObj || {})
       .filter(([d, txt]) => (txt||"").trim().length > 0)
       .sort((a,b)=> b[0].localeCompare(a[0]));
 
@@ -611,48 +606,93 @@ function createDashboard(prefix, storageKey){
     box.querySelectorAll("button[data-del]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const d = btn.getAttribute("data-del");
-        if(!confirm(`${d} 기록을 삭제할까요?`)) return;
-        delete state.journals[d];
+        if(!confirm(`${d} ${kindLabel} 기록을 삭제할까요?`)) return;
+        delete mapObj[d];
         save(state);
-        renderDiaryList();
+        renderTextList(targetId, mapObj, kindLabel);
         renderAnalytics();
       });
     });
   }
 
-  document.getElementById(prefix+"_btnDiaryList").addEventListener("click", ()=>{
-    const box = document.getElementById(prefix+"_diaryList");
-    const open = box.style.display !== "none";
-    box.style.display = open ? "none" : "block";
-    if(!open) renderDiaryList();
-  });
+  // 일기 리스트 버튼
+  const btnDiaryList = document.getElementById(prefix+"_btnDiaryList");
+  if(btnDiaryList){
+    btnDiaryList.addEventListener("click", ()=>{
+      const box = document.getElementById(prefix+"_diaryList");
+      const open = box.style.display !== "none";
+      box.style.display = open ? "none" : "block";
+      if(!open) renderTextList(prefix+"_diaryList", state.journals, "일기/메모");
+    });
+  }
 
-  document.getElementById(prefix+"_btnDiaryExport").addEventListener("click", ()=>{
-    const data = { journals: state.journals || {}, daily: state.daily || {} };
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = (prefix==="r" ? "routine" : "beauty") + "-dashboard-backup.json";
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
+  // 일기 백업
+  const btnDiaryExport = document.getElementById(prefix+"_btnDiaryExport");
+  if(btnDiaryExport){
+    btnDiaryExport.addEventListener("click", ()=>{
+      const data = {
+        journals: state.journals || {},
+        daily: state.daily || {},
+        lifePlans: state.lifePlans || {}
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = (prefix==="r" ? "routine" : "beauty") + "-dashboard-backup.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
 
-  document.getElementById(prefix+"_btnTodayReset").addEventListener("click", ()=>{
-    if(!confirm("오늘 체크와 오늘 기록만 리셋할까요?")) return;
-    state.daily[T] = {};
-    state.journals[T] = "";
-    save(state);
-    boxes().forEach(b=> b.checked = false);
-    journal.value = "";
-    updateTodayProgress();
-    renderAnalytics();
-  });
+  // 인생 계획 리스트/백업(루틴만)
+  const btnLPList = document.getElementById(prefix+"_btnLifePlanList");
+  if(btnLPList){
+    btnLPList.addEventListener("click", ()=>{
+      const box = document.getElementById(prefix+"_lifePlanList");
+      const open = box.style.display !== "none";
+      box.style.display = open ? "none" : "block";
+      if(!open) renderTextList(prefix+"_lifePlanList", state.lifePlans, "인생 계획");
+    });
+  }
+  const btnLPExport = document.getElementById(prefix+"_btnLifePlanExport");
+  if(btnLPExport){
+    btnLPExport.addEventListener("click", ()=>{
+      const data = { lifePlans: state.lifePlans || {} };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "lifeplan-backup.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
 
-  document.getElementById(prefix+"_btnClearAll").addEventListener("click", ()=>{
-    if(!confirm("전체 데이터(체크/기록)를 모두 초기화할까요?")) return;
-    localStorage.removeItem(storageKey);
-    location.reload();
-  });
+  // 오늘만 리셋 / 전체 초기화
+  const btnTodayReset = document.getElementById(prefix+"_btnTodayReset");
+  if(btnTodayReset){
+    btnTodayReset.addEventListener("click", ()=>{
+      if(!confirm("오늘 체크와 오늘 기록만 리셋할까요?")) return;
+      state.daily[T] = {};
+      state.journals[T] = "";
+      if(state.lifePlans) state.lifePlans[T] = "";
+      save(state);
+
+      boxes().forEach(b=> b.checked = false);
+      if(journal) journal.value = "";
+      if(lifePlan) lifePlan.value = "";
+      updateTodayProgress();
+      renderAnalytics();
+    });
+  }
+
+  const btnClearAll = document.getElementById(prefix+"_btnClearAll");
+  if(btnClearAll){
+    btnClearAll.addEventListener("click", ()=>{
+      if(!confirm("전체 데이터(체크/기록)를 모두 초기화할까요?")) return;
+      localStorage.removeItem(storageKey);
+      location.reload();
+    });
+  }
 
   function progressOf(dateStr){
     const keys = keysList();
@@ -706,6 +746,7 @@ function createDashboard(prefix, storageKey){
 
   function renderWeekBars(){
     const el = document.getElementById(prefix+"_weekBars");
+    if(!el) return;
     const today = new Date();
     const parts = [];
     for(let i=6;i>=0;i--){
@@ -727,6 +768,8 @@ function createDashboard(prefix, storageKey){
   function renderCalendar(){
     const grid = document.getElementById(prefix+"_calGrid");
     const label = document.getElementById(prefix+"_calLabel");
+    if(!grid || !label) return;
+
     label.textContent = `월간 달력 · ${calYear}-${pad2(calMonth0+1)}`;
 
     const first = new Date(calYear, calMonth0, 1);
@@ -771,46 +814,67 @@ function createDashboard(prefix, storageKey){
     const totalEl = document.getElementById(prefix+"_dayModalTotal");
     const journalEl = document.getElementById(prefix+"_dayModalJournal");
 
+    if(!back || !title || !pctEl || !doneEl || !totalEl || !journalEl) return;
+
     const p = progressOf(dateStr);
     title.textContent = `📅 ${dateStr}`;
     pctEl.textContent = `${p.pct}%`;
     doneEl.textContent = p.done;
     totalEl.textContent = p.total;
     journalEl.textContent = (state.journals && state.journals[dateStr]) ? state.journals[dateStr] : "(기록 없음)";
+
+    const lifePlanModal = document.getElementById(prefix+"_dayModalLifePlan");
+    if(lifePlanModal){
+      lifePlanModal.textContent = (state.lifePlans && state.lifePlans[dateStr]) ? state.lifePlans[dateStr] : "(기록 없음)";
+    }
+
     back.style.display = "flex";
   }
 
   function closeDayModal(){
     const back = document.getElementById(prefix+"_dayModalBackdrop");
-    back.style.display = "none";
+    if(back) back.style.display = "none";
   }
 
-  document.getElementById(prefix+"_btnCloseDayModal").addEventListener("click", closeDayModal);
-  document.getElementById(prefix+"_dayModalBackdrop").addEventListener("click", (e)=>{
-    if(e.target && e.target.id === (prefix+"_dayModalBackdrop")) closeDayModal();
-  });
+  const btnClose = document.getElementById(prefix+"_btnCloseDayModal");
+  if(btnClose) btnClose.addEventListener("click", closeDayModal);
 
-  document.getElementById(prefix+"_btnPrevMonth").addEventListener("click", ()=>{
+  const back = document.getElementById(prefix+"_dayModalBackdrop");
+  if(back){
+    back.addEventListener("click", (e)=>{
+      if(e.target && e.target.id === (prefix+"_dayModalBackdrop")) closeDayModal();
+    });
+  }
+
+  const btnPrev = document.getElementById(prefix+"_btnPrevMonth");
+  const btnNext = document.getElementById(prefix+"_btnNextMonth");
+  const btnThis = document.getElementById(prefix+"_btnThisMonth");
+
+  if(btnPrev) btnPrev.addEventListener("click", ()=>{
     calMonth0--; if(calMonth0<0){ calMonth0=11; calYear--; }
     renderAnalytics();
   });
-  document.getElementById(prefix+"_btnNextMonth").addEventListener("click", ()=>{
+  if(btnNext) btnNext.addEventListener("click", ()=>{
     calMonth0++; if(calMonth0>11){ calMonth0=0; calYear++; }
     renderAnalytics();
   });
-  document.getElementById(prefix+"_btnThisMonth").addEventListener("click", ()=>{
+  if(btnThis) btnThis.addEventListener("click", ()=>{
     const n=new Date(); calYear=n.getFullYear(); calMonth0=n.getMonth();
     renderAnalytics();
   });
 
   function renderAnalytics(){
     const w = weekStats();
-    document.getElementById(prefix+"_weekAvg").textContent = `${w.avg}%`;
-    document.getElementById(prefix+"_weekDays").textContent = `기록 ${w.count}일`;
+    const wAvg = document.getElementById(prefix+"_weekAvg");
+    const wDays = document.getElementById(prefix+"_weekDays");
+    if(wAvg) wAvg.textContent = `${w.avg}%`;
+    if(wDays) wDays.textContent = `기록 ${w.count}일`;
 
     const m = monthStats(calYear, calMonth0);
-    document.getElementById(prefix+"_monthAvg").textContent = `${m.avg}%`;
-    document.getElementById(prefix+"_monthDays").textContent = `기록 ${m.cntDaysWithData}일`;
+    const mAvg = document.getElementById(prefix+"_monthAvg");
+    const mDays = document.getElementById(prefix+"_monthDays");
+    if(mAvg) mAvg.textContent = `${m.avg}%`;
+    if(mDays) mDays.textContent = `기록 ${m.cntDaysWithData}일`;
 
     renderWeekBars();
     renderCalendar();
@@ -821,8 +885,8 @@ function createDashboard(prefix, storageKey){
 }
 
 /* ===== 두 대시보드 생성 (저장소 분리) ===== */
-createDashboard("r", "focus_dashboard_routine_v3");
-createDashboard("b", "focus_dashboard_beauty_v3");
+createDashboard("r", "focus_dashboard_routine_v4");
+createDashboard("b", "focus_dashboard_beauty_v4");
 </script>
 
 </body>
