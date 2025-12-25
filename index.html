@@ -92,6 +92,7 @@
       width:18px; height:18px; margin-top:2px;
       accent-color: var(--accent);
       cursor:pointer;
+      flex:0 0 auto;
     }
     .item-title{
       font-size:14px; margin:0; line-height:1.35;
@@ -257,6 +258,78 @@
       border-color: transparent;
       background: transparent;
     }
+
+    /* ===== 아침/저녁 루틴 구분 ===== */
+    .block{
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .block:first-child{
+      margin-top:0;
+      padding-top:0;
+      border-top:none;
+    }
+    .block h3{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:-0.2px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .badge{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+
+    /* ===== 모달(일기 팝업) ===== */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .modal{
+      width:min(720px, 100%);
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      padding:14px;
+    }
+    .modal h2{
+      margin:0 0 8px;
+      font-size:16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .modal .hint{
+      color:var(--muted);
+      font-size:12px;
+      margin:0 0 10px;
+      line-height:1.45;
+    }
+    .modal .actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    .ghost{
+      background: transparent;
+    }
   </style>
 </head>
 <body>
@@ -279,6 +352,7 @@
           <span class="chip">강아지</span>
           <span class="chip">마음챙김</span>
           <span class="chip">식단</span>
+          <span class="chip">스트릭</span>
         </div>
       </div>
       <div class="row">
@@ -296,275 +370,99 @@
         <span class="small" id="dateLabel"></span>
       </h2>
 
-      <div class="grid2" id="checklist">
-        <!-- 영어 -->
-        <div class="item">
-          <input type="checkbox" data-key="eng_app" />
-          <div>
-            <p class="item-title">영어 어플 15분</p>
-            <p class="item-desc">짧게라도 매일. (리스닝/스피킹 우선)</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="worksheet" />
-          <div>
-            <p class="item-title">학습지 1회</p>
-            <p class="item-desc">가볍게 1장이라도 완료.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="friend" />
-          <div>
-            <p class="item-title">외국인 친구 만들기 행동 1개</p>
-            <p class="item-desc">DM/모임 신청/1문장 대화 등 “행동”만 체크.</p>
-          </div>
-        </div>
+      <div id="checklist">
+        <!-- 🌙 아침 루틴 -->
+        <div class="block">
+          <h3>🌙 아침 루틴 <span class="badge">가볍게 시작</span></h3>
+          <div class="grid2">
+            <div class="item">
+              <input type="checkbox" data-key="meditation" />
+              <div>
+                <p class="item-title">마음챙김 명상</p>
+                <p class="item-desc">5~10분 호흡 집중. 잘하려 하지 말고 그냥 앉기.</p>
+              </div>
+            </div>
 
-        <!-- 건강 -->
-        <div class="item">
-          <input type="checkbox" data-key="running" />
-          <div>
-            <p class="item-title">러닝 (또는 빠른 걷기)</p>
-            <p class="item-desc">컨디션 따라 강도 조절, 20~40분 목표.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="strength" />
-          <div>
-            <p class="item-title">근력운동 20분</p>
-            <p class="item-desc">스쿼트/푸쉬업/풀업/플랭크 등.</p>
-          </div>
-        </div>
+            <div class="item">
+              <input type="checkbox" data-key="running" />
+              <div>
+                <p class="item-title">러닝 (또는 빠른 걷기)</p>
+                <p class="item-desc">컨디션 따라 강도 조절, 20~40분 목표.</p>
+              </div>
+            </div>
 
-        <!-- 식단 -->
-        <div class="item">
-          <input type="checkbox" data-key="diet" />
-          <div>
-            <p class="item-title">식단 조절 체크</p>
-            <p class="item-desc">적색육/소금물/버터 섭취를 “의식적으로” 관리.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="one_meal" />
-          <div>
-            <p class="item-title">1일 1식</p>
-            <p class="item-desc">오늘의 식사 1회만(컨디션 최우선).</p>
-          </div>
-        </div>
+            <div class="item">
+              <input type="checkbox" data-key="strength" />
+              <div>
+                <p class="item-title">근력운동 20분</p>
+                <p class="item-desc">스쿼트/푸쉬업/풀업/플랭크 등.</p>
+              </div>
+            </div>
 
-        <!-- 마음챙김 -->
-        <div class="item">
-          <input type="checkbox" data-key="meditation" />
-          <div>
-            <p class="item-title">마음챙김 명상</p>
-            <p class="item-desc">5~10분 호흡 집중. 잘하려 하지 말고 그냥 앉기.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="journaling" />
-          <div>
-            <p class="item-title">일기 쓰기</p>
-            <p class="item-desc">3줄이면 충분. 감정/생각을 밖으로 꺼내기.</p>
-          </div>
-        </div>
+            <div class="item">
+              <input type="checkbox" data-key="dog_walk" />
+              <div>
+                <p class="item-title">강아지 산책</p>
+                <p class="item-desc">하루 1회 이상, 짧아도 OK. 함께 걷기.</p>
+              </div>
+            </div>
 
-        <!-- 생활 -->
-        <div class="item">
-          <input type="checkbox" data-key="focus" />
-          <div>
-            <p class="item-title">선택과 집중: 불필요 1개 삭제</p>
-            <p class="item-desc">앱/구독/약속/물건 하나 줄이기(생활 단순화).</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="save" />
-          <div>
-            <p class="item-title">절약: 안 쓰기 챌린지</p>
-            <p class="item-desc">오늘 소비 0원 또는 계획된 소비만.</p>
+            <div class="item">
+              <input type="checkbox" data-key="dog_teeth" />
+              <div>
+                <p class="item-title">강아지 양치</p>
+                <p class="item-desc">매일 1회. 건강 + 신뢰 쌓기.</p>
+              </div>
+            </div>
+
+            <div class="item">
+              <input type="checkbox" data-key="eng_app" />
+              <div>
+                <p class="item-title">영어 어플 15분</p>
+                <p class="item-desc">짧게라도 매일. (리스닝/스피킹 우선)</p>
+              </div>
+            </div>
+
+            <div class="item">
+              <input type="checkbox" data-key="worksheet" />
+              <div>
+                <p class="item-title">학습지 1회</p>
+                <p class="item-desc">가볍게 1장이라도 완료.</p>
+              </div>
+            </div>
+
+            <div class="item">
+              <input type="checkbox" data-key="friend" />
+              <div>
+                <p class="item-title">외국인 친구 만들기 행동 1개</p>
+                <p class="item-desc">DM/모임 신청/1문장 대화 등 “행동”만 체크.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- 준비물 -->
-        <div class="item">
-          <input type="checkbox" data-key="gear" />
-          <div>
-            <p class="item-title">런닝 조끼 / 노트북 체크</p>
-            <p class="item-desc">운동/작업 준비물 미리 점검해서 루틴 저항 낮추기.</p>
-          </div>
-        </div>
+        <!-- 🌙 저녁 루틴 -->
+        <div class="block">
+          <h3>🌙 저녁 루틴 <span class="badge">정리 & 지속</span></h3>
+          <div class="grid2">
+            <div class="item">
+              <input type="checkbox" data-key="diet" />
+              <div>
+                <p class="item-title">식단 조절 체크</p>
+                <p class="item-desc">적색육/소금물/버터 섭취를 “의식적으로” 관리.</p>
+              </div>
+            </div>
 
-        <!-- 강아지 케어 -->
-        <div class="item">
-          <input type="checkbox" data-key="dog_walk" />
-          <div>
-            <p class="item-title">강아지 산책</p>
-            <p class="item-desc">하루 1회 이상, 짧아도 OK. 함께 걷기.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="dog_teeth" />
-          <div>
-            <p class="item-title">강아지 양치</p>
-            <p class="item-desc">매일 1회. 건강 + 신뢰 쌓기.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="dog_bath" />
-          <div>
-            <p class="item-title">강아지 목욕/위생 케어</p>
-            <p class="item-desc">목욕, 발 닦기, 귀/눈 주변 정리.</p>
-          </div>
-        </div>
+            <div class="item">
+              <input type="checkbox" data-key="one_meal" />
+              <div>
+                <p class="item-title">1일 1식</p>
+                <p class="item-desc">오늘의 식사 1회만(컨디션 최우선).</p>
+              </div>
+            </div>
 
-        <!-- 루틴/인생 -->
-        <div class="item">
-          <input type="checkbox" data-key="computer" />
-          <div>
-            <p class="item-title">컴을 가까이하는 루틴 1회</p>
-            <p class="item-desc">예: 25분 집중(타이머) + 기록 3줄.</p>
-          </div>
-        </div>
-        <div class="item">
-          <input type="checkbox" data-key="lifeplan" />
-          <div>
-            <p class="item-title">인생 계획 10분</p>
-            <p class="item-desc">이번 주 목표/이번 달 목표/다음 행동 1개만.</p>
-          </div>
-        </div>
-
-        <!-- 자존감 -->
-        <div class="item">
-          <input type="checkbox" data-key="esteem" />
-          <div>
-            <p class="item-title">자존심·자존감 채우기</p>
-            <p class="item-desc">오늘 “잘한 것 1개”를 아래 메모에 적기.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="progress" aria-label="progress">
-        <div class="bar" id="progressBar"></div>
-      </div>
-      <div class="kpi">
-        <div>
-          <div class="tag">오늘 진행률</div>
-          <div class="num" id="percent">0%</div>
-        </div>
-        <div>
-          <div class="tag">완료 항목</div>
-          <div class="num"><span id="done">0</span>/<span id="total">0</span></div>
-        </div>
-      </div>
-
-      <div class="quote" id="quoteBox">
-        “오늘은 완벽이 아니라, 반복을 선택한다.”
-      </div>
-    </section>
-
-    <!-- RIGHT -->
-    <aside class="card">
-      <h2>메모 & 계획</h2>
-
-      <label class="small" for="topGoal">이번 주 가장 중요한 1가지</label>
-      <input id="topGoal" type="text" placeholder="예: 영어 스피킹 루틴 고정하기" />
-
-      <div style="height:10px"></div>
-
-      <label class="small" for="note">오늘 기록 (3줄이면 충분)</label>
-      <textarea id="note" placeholder="1) 오늘 잘한 것\n2) 내일 더 쉽게 할 방법\n3) 감사한 것"></textarea>
-
-      <div style="height:12px"></div>
-
-      <h2>빠른 링크(직접 수정용) <span class="small">원하면 URL 넣어두기</span></h2>
-      <div class="grid2">
-        <div>
-          <label class="small" for="link1">영어 앱</label>
-          <input id="link1" type="text" placeholder="https://..." />
-        </div>
-        <div>
-          <label class="small" for="link2">외국인 모임/커뮤니티</label>
-          <input id="link2" type="text" placeholder="https://..." />
-        </div>
-        <div>
-          <label class="small" for="link3">러닝 기록</label>
-          <input id="link3" type="text" placeholder="https://..." />
-        </div>
-        <div>
-          <label class="small" for="link4">인생계획 문서</label>
-          <input id="link4" type="text" placeholder="https://..." />
-        </div>
-      </div>
-
-      <div style="height:12px"></div>
-
-      <div class="row">
-        <button id="btnOpenLinks">링크 열기</button>
-        <button id="btnExport">데이터 백업(JSON)</button>
-      </div>
-
-      <!-- ===== 기록 영역 추가 ===== -->
-      <div class="section-title">
-        <span>최근 7일 기록</span>
-        <span class="pill" id="weekSummary">—</span>
-      </div>
-      <div class="box">
-        <table class="table" aria-label="최근 7일 기록">
-          <thead>
-            <tr>
-              <th style="width:36%">날짜</th>
-              <th style="width:32%">완료</th>
-              <th style="width:32%">진행률</th>
-            </tr>
-          </thead>
-          <tbody id="weekTable"></tbody>
-        </table>
-      </div>
-
-      <div class="section-title">
-        <span id="monthTitle">월간 달력</span>
-        <span class="pill">이번 달</span>
-      </div>
-      <div class="box">
-        <div class="cal-head">
-          <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
-        </div>
-        <div class="cal-grid" id="calGrid"></div>
-      </div>
-
-      <div class="quote" style="margin-top:12px">
-        ✅ 팁: 기록은 이 브라우저(LocalStorage)에 날짜별로 쌓입니다.
-      </div>
-    </aside>
-  </main>
-
-  <footer>
-    저장 위치: 이 페이지는 브라우저의 <b>LocalStorage</b>에만 저장됩니다(서버 업로드 없음).<br/>
-    파일로 저장: <code>index.html</code>로 저장 → 더블클릭으로 열기.
-  </footer>
-
-  <script>
-    // --- Utilities ---
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-    const STORAGE_KEY = "focus_dashboard_v1";
-
-    const quotes = [
-      "“오늘은 완벽이 아니라, 반복을 선택한다.”",
-      "“작게 시작하면 크게 오래 간다.”",
-      "“의지가 아니라 환경을 설계한다.”",
-      "“나는 내 약속을 지키는 사람이다.”",
-      "“비교는 줄이고, 기록은 늘린다.”"
-    ];
-
-    function pad2(n){ return String(n).padStart(2,"0"); }
-
-    function keyFromDate(d){
-      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-    }
-
-    function todayKey() {
-      return keyFromDate(new Date());
-    }
-
-    function loadState() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) 
+            <div class="item">
+              <input type="checkbox" data-key="focus" />
+              <div>
+                <p class="item-title">선택과 집중: 불필요 1개 삭제</p>
+                <p class="item-desc">앱/구독/약속
