@@ -181,6 +181,82 @@
       font-size:12px;
     }
     a{color:inherit}
+
+    /* ===== 기록(최근 7일 + 월간달력) ===== */
+    .section-title{
+      margin:14px 0 8px;
+      font-size:14px;
+      letter-spacing:-0.2px;
+      display:flex; align-items:center; justify-content:space-between;
+      color:var(--text);
+    }
+    .box{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      border-radius:12px;
+      padding:10px;
+    }
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      font-size:12px;
+    }
+    .table th, .table td{
+      padding:8px 6px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      text-align:left;
+      vertical-align:middle;
+      color:var(--muted);
+    }
+    .table th{color: var(--text); font-weight:700;}
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+    }
+    .cal-head{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:6px;
+      margin-bottom:6px;
+      font-size:11px;
+      color: var(--muted);
+    }
+    .cal-grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:6px;
+    }
+    .cal-cell{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      border-radius:10px;
+      padding:8px 8px 6px;
+      min-height:52px;
+    }
+    .cal-cell .d{
+      font-size:12px;
+      color: var(--text);
+      font-weight:700;
+    }
+    .cal-cell .p{
+      margin-top:6px;
+      font-size:11px;
+      color: var(--muted);
+    }
+    .cal-cell.today{
+      border-color: rgba(124,92,255,.45);
+      box-shadow: 0 0 0 2px rgba(124,92,255,.12) inset;
+    }
+    .cal-cell.empty{
+      border-color: transparent;
+      background: transparent;
+    }
   </style>
 </head>
 <body>
@@ -200,6 +276,9 @@
           <span class="chip">루틴</span>
           <span class="chip">인생계획</span>
           <span class="chip">자존감</span>
+          <span class="chip">강아지</span>
+          <span class="chip">마음챙김</span>
+          <span class="chip">식단</span>
         </div>
       </div>
       <div class="row">
@@ -256,11 +335,36 @@
             <p class="item-desc">스쿼트/푸쉬업/풀업/플랭크 등.</p>
           </div>
         </div>
+
+        <!-- 식단 -->
         <div class="item">
           <input type="checkbox" data-key="diet" />
           <div>
             <p class="item-title">식단 조절 체크</p>
             <p class="item-desc">적색육/소금물/버터 섭취를 “의식적으로” 관리.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="one_meal" />
+          <div>
+            <p class="item-title">1일 1식</p>
+            <p class="item-desc">오늘의 식사 1회만(컨디션 최우선).</p>
+          </div>
+        </div>
+
+        <!-- 마음챙김 -->
+        <div class="item">
+          <input type="checkbox" data-key="meditation" />
+          <div>
+            <p class="item-title">마음챙김 명상</p>
+            <p class="item-desc">5~10분 호흡 집중. 잘하려 하지 말고 그냥 앉기.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="journaling" />
+          <div>
+            <p class="item-title">일기 쓰기</p>
+            <p class="item-desc">3줄이면 충분. 감정/생각을 밖으로 꺼내기.</p>
           </div>
         </div>
 
@@ -286,6 +390,29 @@
           <div>
             <p class="item-title">런닝 조끼 / 노트북 체크</p>
             <p class="item-desc">운동/작업 준비물 미리 점검해서 루틴 저항 낮추기.</p>
+          </div>
+        </div>
+
+        <!-- 강아지 케어 -->
+        <div class="item">
+          <input type="checkbox" data-key="dog_walk" />
+          <div>
+            <p class="item-title">강아지 산책</p>
+            <p class="item-desc">하루 1회 이상, 짧아도 OK. 함께 걷기.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="dog_teeth" />
+          <div>
+            <p class="item-title">강아지 양치</p>
+            <p class="item-desc">매일 1회. 건강 + 신뢰 쌓기.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="dog_bath" />
+          <div>
+            <p class="item-title">강아지 목욕/위생 케어</p>
+            <p class="item-desc">목욕, 발 닦기, 귀/눈 주변 정리.</p>
           </div>
         </div>
 
@@ -375,8 +502,37 @@
         <button id="btnExport">데이터 백업(JSON)</button>
       </div>
 
+      <!-- ===== 기록 영역 추가 ===== -->
+      <div class="section-title">
+        <span>최근 7일 기록</span>
+        <span class="pill" id="weekSummary">—</span>
+      </div>
+      <div class="box">
+        <table class="table" aria-label="최근 7일 기록">
+          <thead>
+            <tr>
+              <th style="width:36%">날짜</th>
+              <th style="width:32%">완료</th>
+              <th style="width:32%">진행률</th>
+            </tr>
+          </thead>
+          <tbody id="weekTable"></tbody>
+        </table>
+      </div>
+
+      <div class="section-title">
+        <span id="monthTitle">월간 달력</span>
+        <span class="pill">이번 달</span>
+      </div>
+      <div class="box">
+        <div class="cal-head">
+          <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
       <div class="quote" style="margin-top:12px">
-        ✅ 팁: 체크리스트는 자동 저장돼서 브라우저를 닫아도 유지돼요.
+        ✅ 팁: 기록은 이 브라우저(LocalStorage)에 날짜별로 쌓입니다.
       </div>
     </aside>
   </main>
@@ -400,142 +556,15 @@
       "“비교는 줄이고, 기록은 늘린다.”"
     ];
 
+    function pad2(n){ return String(n).padStart(2,"0"); }
+
+    function keyFromDate(d){
+      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+    }
+
     function todayKey() {
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const day = String(d.getDate()).padStart(2,"0");
-      return `${y}-${m}-${day}`;
+      return keyFromDate(new Date());
     }
 
     function loadState() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-      } catch(e) {
-        return {};
-      }
-    }
-
-    function saveState(state) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function getState() {
-      const state = loadState();
-      if (!state.daily) state.daily = {};
-      if (!state.daily[todayKey()]) state.daily[todayKey()] = {};
-      if (!state.meta) state.meta = {};
-      return state;
-    }
-
-    function setDaily(key, value) {
-      const state = getState();
-      state.daily[todayKey()][key] = value;
-      saveState(state);
-    }
-
-    function getDaily(key) {
-      const state = getState();
-      return !!state.daily[todayKey()][key];
-    }
-
-    function setMeta(key, value) {
-      const state = getState();
-      state.meta[key] = value;
-      saveState(state);
-    }
-
-    function getMeta(key) {
-      const state = getState();
-      return state.meta[key] || "";
-    }
-
-    // --- UI Bindings ---
-    function updateProgress() {
-      const boxes = $$("#checklist input[type='checkbox']");
-      const total = boxes.length;
-      const done = boxes.filter(b => b.checked).length;
-      const pct = total === 0 ? 0 : Math.round((done/total)*100);
-
-      $("#total").textContent = total;
-      $("#done").textContent = done;
-      $("#percent").textContent = pct + "%";
-      $("#progressBar").style.width = pct + "%";
-
-      // rotate a quote when fully done
-      if (pct === 100) {
-        $("#quoteBox").textContent = "“끝. 오늘의 나는 약속을 지켰다.”";
-      }
-    }
-
-    function init() {
-      $("#dateLabel").textContent = todayKey();
-
-      // random quote
-      $("#quoteBox").textContent = quotes[Math.floor(Math.random()*quotes.length)];
-
-      // checkboxes
-      $$("#checklist input[type='checkbox']").forEach(box => {
-        const key = box.dataset.key;
-        box.checked = getDaily(key);
-        box.addEventListener("change", () => {
-          setDaily(key, box.checked);
-          updateProgress();
-        });
-      });
-
-      // meta fields
-      $("#topGoal").value = getMeta("topGoal");
-      $("#note").value = getMeta("note");
-      ["link1","link2","link3","link4"].forEach(id => {
-        $("#"+id).value = getMeta(id);
-        $("#"+id).addEventListener("input", (e) => setMeta(id, e.target.value));
-      });
-
-      $("#topGoal").addEventListener("input", (e) => setMeta("topGoal", e.target.value));
-      $("#note").addEventListener("input", (e) => setMeta("note", e.target.value));
-
-      // buttons
-      $("#btnToday").addEventListener("click", () => {
-        const state = getState();
-        state.daily[todayKey()] = {}; // reset only today
-        saveState(state);
-        $$("#checklist input[type='checkbox']").forEach(b => b.checked = false);
-        updateProgress();
-      });
-
-      $("#btnClear").addEventListener("click", () => {
-        if (!confirm("전체 데이터(체크/메모/링크)를 초기화할까요?")) return;
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      });
-
-      $("#btnOpenLinks").addEventListener("click", () => {
-        const urls = ["link1","link2","link3","link4"]
-          .map(id => ($("#"+id).value || "").trim())
-          .filter(u => u.length > 0);
-
-        if (urls.length === 0) {
-          alert("열 링크가 없어요. 오른쪽에 URL을 먼저 적어주세요.");
-          return;
-        }
-        urls.forEach(u => window.open(u, "_blank"));
-      });
-
-      $("#btnExport").addEventListener("click", () => {
-        const data = loadState();
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "focus-dashboard-backup.json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      });
-
-      updateProgress();
-    }
-
-    init();
-  </script>
-</body>
-</html>
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY))
