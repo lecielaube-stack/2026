@@ -65,6 +65,16 @@ textarea{
 pre{white-space:pre-wrap;margin:8px 0 0;color:var(--text);font-family:inherit;font-size:13px;line-height:1.5}
 hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
+<style>
+  /* 기존 CSS들 */
+
+  /* ⬇️ 여기부터 추가 */
+  /* 주/월 통계, 그래프, 달력 관련 CSS */
+  .week-bars { … }
+  .calendar { … }
+  /* ⬆️ 여기까지 */
+
+</style>
 </style>
 </head>
 
@@ -141,7 +151,66 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     ✔ 폰을 바꾸거나 브라우저 데이터를 지우면 사라질 수 있어요 → “일기 백업(JSON)” 권장.
   </footer>
 </div>
+<!-- ====== 주/월 통계 + 그래프 + 달력 (표시 자리) ====== -->
+<div class="card" id="analyticsCard">
+  <h2 style="margin:0 0 10px;">주/월 진행률</h2>
 
+  <div class="grid2">
+    <div class="statbox">
+      <div class="statlabel">이번 주 평균</div>
+      <div class="statnum" id="weekAvg">0%</div>
+      <div class="statdesc" id="weekDays">기록 0일</div>
+    </div>
+
+    <div class="statbox">
+      <div class="statlabel">이번 달 평균</div>
+      <div class="statnum" id="monthAvg">0%</div>
+      <div class="statdesc" id="monthDays">기록 0일</div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="statlabel">최근 7일 그래프</div>
+  <div id="weekBars" class="weekbars"></div>
+
+  <div style="height:14px"></div>
+
+  <div class="row" style="justify-content:space-between">
+    <div class="statlabel">월간 달력</div>
+    <button id="btnThisMonth" type="button">이번 달</button>
+  </div>
+  <div id="calendar" class="calendar"></div>
+</div>
+
+<!-- ====== 날짜 클릭 시 팝업(모달): 해당 날짜 체크/일기 보기 ====== -->
+<div id="dayModalBackdrop" class="modalbackdrop" style="display:none">
+  <div class="modal">
+    <div class="row" style="justify-content:space-between; align-items:center">
+      <div>
+        <div class="statlabel">기록 보기</div>
+        <div class="statnum" id="dayModalTitle" style="font-size:18px">YYYY-MM-DD</div>
+      </div>
+      <button id="btnCloseDayModal" type="button">닫기</button>
+    </div>
+
+    <div style="height:10px"></div>
+    <div class="grid2">
+      <div class="statbox">
+        <div class="statlabel">진행률</div>
+        <div class="statnum" id="dayModalPct">0%</div>
+      </div>
+      <div class="statbox">
+        <div class="statlabel">완료</div>
+        <div class="statnum"><span id="dayModalDone">0</span>/<span id="dayModalTotal">0</span></div>
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+    <div class="statlabel">📖 그날의 일기</div>
+    <div id="dayModalJournal" class="journalview">기록 없음</div>
+  </div>
+</div>
 <script>
 const $$ = s => Array.from(document.querySelectorAll(s));
 const $ = s => document.querySelector(s);
