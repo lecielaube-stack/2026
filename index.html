@@ -1,162 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>대시보드(안전모드)</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:#0b1020;color:#e9eeff}
+.wrap{max-width:900px;margin:0 auto;padding:18px}
+.card{background:#121a33;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;margin:12px 0}
+.item{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);margin:10px 0}
+input{width:18px;height:18px;margin-top:2px}
+.progress{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:12px}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,#7c5cff,#3ddc97)}
+.kpi{display:flex;gap:10px;margin-top:10px}
+.kpi .box{flex:1;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px}
+.num{font-size:22px;font-weight:800;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2>대시보드 (안전모드)</h2>
+  <p style="color:#8ea0c9">체크하면 진행률이 바로 올라가면 정상입니다.</p>
+
+  <div class="card">
+    <div class="item"><input type="checkbox" data-key="a"> 영어 어플 15분</div>
+    <div class="item"><input type="checkbox" data-key="b"> 러닝/걷기</div>
+    <div class="item"><input type="checkbox" data-key="c"> 마음챙김(명상/일기)</div>
+
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <div class="kpi">
+      <div class="box">오늘 진행률<div class="num" id="percent">0%</div></div>
+      <div class="box">완료 항목<div class="num"><span id="done">0</span>/<span id="total">0</span></div></div>
+    </div>
+  </div>
+</div>
+
 <script>
-  const $ = (sel) => document.querySelector(sel);
-  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const $$ = s => Array.from(document.querySelectorAll(s));
+const $ = s => document.querySelector(s);
+const KEY = "safe_dashboard_v1";
 
-  const STORAGE_KEY = "focus_dashboard_fixed";
+function load(){ return JSON.parse(localStorage.getItem(KEY)||"{}"); }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
 
-  function pad2(n){ return String(n).padStart(2,"0"); }
-  function todayKey() {
-    const d = new Date();
-    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  }
+function update(){
+  const boxes = $$("input[type=checkbox]");
+  const done = boxes.filter(b=>b.checked).length;
+  const total = boxes.length;
+  const pct = total ? Math.round(done/total*100) : 0;
 
-  function loadState(){
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-    catch(e){ return {}; }
-  }
-  function saveState(state){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
-  function getState(){
-    const s = loadState();
-    if(!s.daily) s.daily = {};
-    if(!s.daily[todayKey()]) s.daily[todayKey()] = {};
-    if(!s.meta) s.meta = {};
-    if(!s.journals) s.journals = {};
-    return s;
-  }
+  $("#done").textContent = done;
+  $("#total").textContent = total;
+  $("#percent").textContent = pct + "%";
+  $("#bar").style.width = pct + "%";
+}
 
-  // ✅ 체크박스 선택: data-key 우선, 없으면 전체 체크박스
-  function allBoxes(){
-    const keyed = $$("input[type='checkbox'][data-key]");
-    if (keyed.length > 0) return keyed;
-    return $$("input[type='checkbox']");
-  }
+const state = load();
 
-  function boxKey(box, idx){
-    return box.dataset.key || `box_${idx}`;
-  }
+$$("input[type=checkbox]").forEach(b=>{
+  b.checked = !!state[b.dataset.key];
+  b.addEventListener("change", ()=>{
+    state[b.dataset.key] = b.checked;
+    save(state);
+    update();
+  });
+});
 
-  function setDaily(key, value){
-    const s = getState();
-    s.daily[todayKey()][key] = !!value;
-    saveState(s);
-  }
-
-  function getDaily(key){
-    const s = getState();
-    return !!(s.daily?.[todayKey()]?.[key]);
-  }
-
-  function setMeta(key, value){
-    const s = getState();
-    s.meta[key] = value;
-    saveState(s);
-  }
-
-  function getMeta(key){
-    const s = getState();
-    return s.meta?.[key] || "";
-  }
-
-  // ===== 진행률 =====
-  function updateProgress(){
-    const boxes = allBoxes();
-    const total = boxes.length;
-    const done = boxes.filter(b => b.checked).length;
-    const pct = total === 0 ? 0 : Math.round((done/total)*100);
-
-    const totalEl = $("#total");
-    const doneEl = $("#done");
-    const pctEl = $("#percent");
-    const barEl = $("#progressBar");
-
-    if (totalEl) totalEl.textContent = total;
-    if (doneEl) doneEl.textContent = done;
-    if (pctEl) pctEl.textContent = pct + "%";
-    if (barEl) barEl.style.width = pct + "%";
-  }
-
-  function init(){
-    const dateLabel = $("#dateLabel");
-    if (dateLabel) dateLabel.textContent = todayKey();
-
-    // 체크박스 바인딩
-    const boxes = allBoxes();
-    boxes.forEach((box, idx) => {
-      const k = boxKey(box, idx);
-      box.checked = getDaily(k);
-      box.addEventListener("change", () => {
-        setDaily(k, box.checked);
-        updateProgress();
-      });
-    });
-
-    // 메모/목표/링크(있으면만)
-    const topGoal = $("#topGoal");
-    const note = $("#note");
-    if (topGoal) {
-      topGoal.value = getMeta("topGoal");
-      topGoal.addEventListener("input", (e)=>setMeta("topGoal", e.target.value));
-    }
-    if (note) {
-      note.value = getMeta("note");
-      note.addEventListener("input", (e)=>setMeta("note", e.target.value));
-    }
-    ["link1","link2","link3","link4"].forEach(id=>{
-      const el = $("#"+id);
-      if(!el) return;
-      el.value = getMeta(id);
-      el.addEventListener("input", (e)=>setMeta(id, e.target.value));
-    });
-
-    // 버튼(있으면만)
-    const btnToday = $("#btnToday");
-    if (btnToday) {
-      btnToday.addEventListener("click", () => {
-        const s = getState();
-        s.daily[todayKey()] = {};
-        saveState(s);
-        allBoxes().forEach(b => b.checked = false);
-        updateProgress();
-      });
-    }
-
-    const btnClear = $("#btnClear");
-    if (btnClear) {
-      btnClear.addEventListener("click", () => {
-        if (!confirm("전체 데이터(체크/메모/링크)를 초기화할까요?")) return;
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      });
-    }
-
-    const btnOpenLinks = $("#btnOpenLinks");
-    if (btnOpenLinks) {
-      btnOpenLinks.addEventListener("click", () => {
-        const urls = ["link1","link2","link3","link4"]
-          .map(id => ($("#"+id)?.value || "").trim())
-          .filter(u => u.length > 0);
-        if (urls.length === 0) return alert("열 링크가 없어요. URL을 먼저 적어주세요.");
-        urls.forEach(u => window.open(u, "_blank"));
-      });
-    }
-
-    const btnExport = $("#btnExport");
-    if (btnExport) {
-      btnExport.addEventListener("click", () => {
-        const data = loadState();
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "focus-dashboard-backup.json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      });
-    }
-
-    updateProgress();
-  }
-
-  init();
+update();
 </script>
+</body>
+</html>
