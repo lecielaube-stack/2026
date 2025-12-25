@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나의 집중 대시보드</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --muted:#8ea0c9;
+      --text:#e9eeff;
+      --accent:#7c5cff;
+      --ok:#3ddc97;
+      --warn:#ffcc66;
+      --danger:#ff6b6b;
+      --line: rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: radial-gradient(1200px 800px at 20% 0%, rgba(124,92,255,.20), transparent 60%),
+                  radial-gradient(1000px 700px at 80% 10%, rgba(61,220,151,.14), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:28px 18px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .title{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+      border-bottom: 1px solid var(--line);
+      padding-bottom:16px;
+    }
+    h1{margin:0; font-size:26px; letter-spacing:-0.3px}
+    .subtitle{margin:6px 0 0; color:var(--muted); font-size:14px; line-height:1.45}
+    .chipbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+    .chip{
+      font-size:12px; padding:7px 10px; border:1px solid var(--line);
+      border-radius:999px; color:var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:16px 18px 42px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+    }
+    @media (max-width: 920px){
+      main{grid-template-columns: 1fr; }
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:16px;
+      letter-spacing:-0.2px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .small{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:500;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .grid2{grid-template-columns:1fr;}
+    }
+    .item{
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+    }
+    .item:hover{border-color: rgba(124,92,255,.35)}
+    input[type="checkbox"]{
+      width:18px; height:18px; margin-top:2px;
+      accent-color: var(--accent);
+      cursor:pointer;
+    }
+    .item-title{
+      font-size:14px; margin:0; line-height:1.35;
+    }
+    .item-desc{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    button{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    button:hover{border-color: rgba(61,220,151,.35)}
+    .danger:hover{border-color: rgba(255,107,107,.45)}
+    .progress{
+      margin-top:10px;
+      width:100%;
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+      border:1px solid var(--line);
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), rgba(61,220,151,.9));
+      border-radius:999px;
+      transition: width .25s ease;
+    }
+    textarea, input[type="text"]{
+      width:100%;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      padding:10px 12px;
+      outline:none;
+      font-size:13px;
+    }
+    textarea{min-height:120px; resize:vertical; line-height:1.5}
+    .kpi{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .kpi > div{
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+    }
+    .kpi .num{font-size:22px; font-weight:700; margin-top:6px}
+    .tag{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      display:inline-block;
+      color:var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+    .quote{
+      border-left:3px solid rgba(124,92,255,.65);
+      padding:8px 10px;
+      color:var(--muted);
+      background: rgba(124,92,255,.08);
+      border-radius:10px;
+      margin:10px 0 0;
+      font-size:13px;
+      line-height:1.55;
+    }
+    footer{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 18px 30px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    a{color:inherit}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <div>
+        <h1>나의 선택과 집중 대시보드</h1>
+        <p class="subtitle">
+          영어/건강/생활단순화/루틴/자존감 — 오늘 해야 할 것만 선명하게.
+          체크하면 자동 저장됩니다.
+        </p>
+        <div class="chipbar">
+          <span class="chip">영어</span>
+          <span class="chip">런닝</span>
+          <span class="chip">근력</span>
+          <span class="chip">절약</span>
+          <span class="chip">루틴</span>
+          <span class="chip">인생계획</span>
+          <span class="chip">자존감</span>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btnToday">오늘로 리셋(일일)</button>
+        <button class="danger" id="btnClear">전체 초기화</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT -->
+    <section class="card">
+      <h2>
+        오늘의 체크리스트
+        <span class="small" id="dateLabel"></span>
+      </h2>
+
+      <div class="grid2" id="checklist">
+        <!-- 영어 -->
+        <div class="item">
+          <input type="checkbox" data-key="eng_app" />
+          <div>
+            <p class="item-title">영어 어플 15분</p>
+            <p class="item-desc">짧게라도 매일. (리스닝/스피킹 우선)</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="worksheet" />
+          <div>
+            <p class="item-title">학습지 1회</p>
+            <p class="item-desc">가볍게 1장이라도 완료.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="friend" />
+          <div>
+            <p class="item-title">외국인 친구 만들기 행동 1개</p>
+            <p class="item-desc">DM/모임 신청/1문장 대화 등 “행동”만 체크.</p>
+          </div>
+        </div>
+
+        <!-- 건강 -->
+        <div class="item">
+          <input type="checkbox" data-key="running" />
+          <div>
+            <p class="item-title">러닝 (또는 빠른 걷기)</p>
+            <p class="item-desc">컨디션 따라 강도 조절, 20~40분 목표.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="strength" />
+          <div>
+            <p class="item-title">근력운동 20분</p>
+            <p class="item-desc">스쿼트/푸쉬업/풀업/플랭크 등.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="diet" />
+          <div>
+            <p class="item-title">식단 조절 체크</p>
+            <p class="item-desc">적색육/소금물/버터 섭취를 “의식적으로” 관리.</p>
+          </div>
+        </div>
+
+        <!-- 생활 -->
+        <div class="item">
+          <input type="checkbox" data-key="focus" />
+          <div>
+            <p class="item-title">선택과 집중: 불필요 1개 삭제</p>
+            <p class="item-desc">앱/구독/약속/물건 하나 줄이기(생활 단순화).</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="save" />
+          <div>
+            <p class="item-title">절약: 안 쓰기 챌린지</p>
+            <p class="item-desc">오늘 소비 0원 또는 계획된 소비만.</p>
+          </div>
+        </div>
+
+        <!-- 준비물 -->
+        <div class="item">
+          <input type="checkbox" data-key="gear" />
+          <div>
+            <p class="item-title">런닝 조끼 / 노트북 체크</p>
+            <p class="item-desc">운동/작업 준비물 미리 점검해서 루틴 저항 낮추기.</p>
+          </div>
+        </div>
+
+        <!-- 루틴/인생 -->
+        <div class="item">
+          <input type="checkbox" data-key="computer" />
+          <div>
+            <p class="item-title">컴을 가까이하는 루틴 1회</p>
+            <p class="item-desc">예: 25분 집중(타이머) + 기록 3줄.</p>
+          </div>
+        </div>
+        <div class="item">
+          <input type="checkbox" data-key="lifeplan" />
+          <div>
+            <p class="item-title">인생 계획 10분</p>
+            <p class="item-desc">이번 주 목표/이번 달 목표/다음 행동 1개만.</p>
+          </div>
+        </div>
+
+        <!-- 자존감 -->
+        <div class="item">
+          <input type="checkbox" data-key="esteem" />
+          <div>
+            <p class="item-title">자존심·자존감 채우기</p>
+            <p class="item-desc">오늘 “잘한 것 1개”를 아래 메모에 적기.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress" aria-label="progress">
+        <div class="bar" id="progressBar"></div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="tag">오늘 진행률</div>
+          <div class="num" id="percent">0%</div>
+        </div>
+        <div>
+          <div class="tag">완료 항목</div>
+          <div class="num"><span id="done">0</span>/<span id="total">0</span></div>
+        </div>
+      </div>
+
+      <div class="quote" id="quoteBox">
+        “오늘은 완벽이 아니라, 반복을 선택한다.”
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="card">
+      <h2>메모 & 계획</h2>
+
+      <label class="small" for="topGoal">이번 주 가장 중요한 1가지</label>
+      <input id="topGoal" type="text" placeholder="예: 영어 스피킹 루틴 고정하기" />
+
+      <div style="height:10px"></div>
+
+      <label class="small" for="note">오늘 기록 (3줄이면 충분)</label>
+      <textarea id="note" placeholder="1) 오늘 잘한 것\n2) 내일 더 쉽게 할 방법\n3) 감사한 것"></textarea>
+
+      <div style="height:12px"></div>
+
+      <h2>빠른 링크(직접 수정용) <span class="small">원하면 URL 넣어두기</span></h2>
+      <div class="grid2">
+        <div>
+          <label class="small" for="link1">영어 앱</label>
+          <input id="link1" type="text" placeholder="https://..." />
+        </div>
+        <div>
+          <label class="small" for="link2">외국인 모임/커뮤니티</label>
+          <input id="link2" type="text" placeholder="https://..." />
+        </div>
+        <div>
+          <label class="small" for="link3">러닝 기록</label>
+          <input id="link3" type="text" placeholder="https://..." />
+        </div>
+        <div>
+          <label class="small" for="link4">인생계획 문서</label>
+          <input id="link4" type="text" placeholder="https://..." />
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="row">
+        <button id="btnOpenLinks">링크 열기</button>
+        <button id="btnExport">데이터 백업(JSON)</button>
+      </div>
+
+      <div class="quote" style="margin-top:12px">
+        ✅ 팁: 체크리스트는 자동 저장돼서 브라우저를 닫아도 유지돼요.
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    저장 위치: 이 페이지는 브라우저의 <b>LocalStorage</b>에만 저장됩니다(서버 업로드 없음).<br/>
+    파일로 저장: <code>index.html</code>로 저장 → 더블클릭으로 열기.
+  </footer>
+
+  <script>
+    // --- Utilities ---
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const STORAGE_KEY = "focus_dashboard_v1";
+
+    const quotes = [
+      "“오늘은 완벽이 아니라, 반복을 선택한다.”",
+      "“작게 시작하면 크게 오래 간다.”",
+      "“의지가 아니라 환경을 설계한다.”",
+      "“나는 내 약속을 지키는 사람이다.”",
+      "“비교는 줄이고, 기록은 늘린다.”"
+    ];
+
+    function todayKey() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getState() {
+      const state = loadState();
+      if (!state.daily) state.daily = {};
+      if (!state.daily[todayKey()]) state.daily[todayKey()] = {};
+      if (!state.meta) state.meta = {};
+      return state;
+    }
+
+    function setDaily(key, value) {
+      const state = getState();
+      state.daily[todayKey()][key] = value;
+      saveState(state);
+    }
+
+    function getDaily(key) {
+      const state = getState();
+      return !!state.daily[todayKey()][key];
+    }
+
+    function setMeta(key, value) {
+      const state = getState();
+      state.meta[key] = value;
+      saveState(state);
+    }
+
+    function getMeta(key) {
+      const state = getState();
+      return state.meta[key] || "";
+    }
+
+    // --- UI Bindings ---
+    function updateProgress() {
+      const boxes = $$("#checklist input[type='checkbox']");
+      const total = boxes.length;
+      const done = boxes.filter(b => b.checked).length;
+      const pct = total === 0 ? 0 : Math.round((done/total)*100);
+
+      $("#total").textContent = total;
+      $("#done").textContent = done;
+      $("#percent").textContent = pct + "%";
+      $("#progressBar").style.width = pct + "%";
+
+      // rotate a quote when fully done
+      if (pct === 100) {
+        $("#quoteBox").textContent = "“끝. 오늘의 나는 약속을 지켰다.”";
+      }
+    }
+
+    function init() {
+      $("#dateLabel").textContent = todayKey();
+
+      // random quote
+      $("#quoteBox").textContent = quotes[Math.floor(Math.random()*quotes.length)];
+
+      // checkboxes
+      $$("#checklist input[type='checkbox']").forEach(box => {
+        const key = box.dataset.key;
+        box.checked = getDaily(key);
+        box.addEventListener("change", () => {
+          setDaily(key, box.checked);
+          updateProgress();
+        });
+      });
+
+      // meta fields
+      $("#topGoal").value = getMeta("topGoal");
+      $("#note").value = getMeta("note");
+      ["link1","link2","link3","link4"].forEach(id => {
+        $("#"+id).value = getMeta(id);
+        $("#"+id).addEventListener("input", (e) => setMeta(id, e.target.value));
+      });
+
+      $("#topGoal").addEventListener("input", (e) => setMeta("topGoal", e.target.value));
+      $("#note").addEventListener("input", (e) => setMeta("note", e.target.value));
+
+      // buttons
+      $("#btnToday").addEventListener("click", () => {
+        const state = getState();
+        state.daily[todayKey()] = {}; // reset only today
+        saveState(state);
+        $$("#checklist input[type='checkbox']").forEach(b => b.checked = false);
+        updateProgress();
+      });
+
+      $("#btnClear").addEventListener("click", () => {
+        if (!confirm("전체 데이터(체크/메모/링크)를 초기화할까요?")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      });
+
+      $("#btnOpenLinks").addEventListener("click", () => {
+        const urls = ["link1","link2","link3","link4"]
+          .map(id => ($("#"+id).value || "").trim())
+          .filter(u => u.length > 0);
+
+        if (urls.length === 0) {
+          alert("열 링크가 없어요. 오른쪽에 URL을 먼저 적어주세요.");
+          return;
+        }
+        urls.forEach(u => window.open(u, "_blank"));
+      });
+
+      $("#btnExport").addEventListener("click", () => {
+        const data = loadState();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "focus-dashboard-backup.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+
+      updateProgress();
+    }
+
+    init();
+  </script>
+</body>
+</html>
