@@ -268,3 +268,235 @@ update();
 </script>
 </body>
 </html>
+// ===== 주/월 집계 + 그래프 + 달력 =====
+function pad2(n){ return String(n).padStart(2,"0"); }
+function ymd(d){
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+function parseYMD(s){
+  const [y,m,d]=s.split("-").map(Number);
+  return new Date(y, m-1, d);
+}
+function sameDay(a,b){
+  return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+}
+function esc(s){ return (s||"").replace(/</g,"&lt;"); }
+
+// 현재 체크박스 key 목록(총 항목 수의 기준)
+function keysList(){
+  return boxes().map(b => b.dataset.key);
+}
+
+function progressOf(dateStr){
+  const keys = keysList();
+  const daily = (state.daily && state.daily[dateStr]) ? state.daily[dateStr] : {};
+  const total = keys.length;
+  const done = keys.filter(k => !!daily[k]).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  return { total, done, pct };
+}
+
+function startOfWeekMonday(d){
+  // 월요일 시작(한국 기준)
+  const day = d.getDay(); // 0 일 ~ 6 토
+  const diff = (day === 0) ? -6 : (1 - day);
+  const s = new Date(d);
+  s.setDate(s.getDate() + diff);
+  s.setHours(0,0,0,0);
+  return s;
+}
+
+function weekStats(){
+  const today = new Date();
+  const start = startOfWeekMonday(today);
+  const days = [];
+  let sum = 0, count = 0;
+
+  for(let i=0;i<7;i++){
+    const d = new Date(start);
+    d.setDate(start.getDate()+i);
+    const ds = ymd(d);
+    const {pct} = progressOf(ds);
+    days.push({ds, pct});
+    if ((state.daily && state.daily[ds]) && Object.keys(state.daily[ds]).length>0) count++;
+    sum += pct;
+  }
+  return {
+    avg: Math.round(sum/7),
+    count,
+    days
+  };
+}
+
+function monthStats(year, month0){
+  const first = new Date(year, month0, 1);
+  const last = new Date(year, month0+1, 0);
+  let sum = 0;
+  let cntDaysWithData = 0;
+
+  for(let day=1; day<=last.getDate(); day++){
+    const d = new Date(year, month0, day);
+    const ds = ymd(d);
+    const {pct} = progressOf(ds);
+    sum += pct;
+    if ((state.daily && state.daily[ds]) && Object.keys(state.daily[ds]).length>0) cntDaysWithData++;
+  }
+  const avg = Math.round(sum / last.getDate());
+  return { avg, cntDaysWithData, first, last };
+}
+
+function renderWeekBars(){
+  const el = $("#weekBars");
+  if(!el) return;
+
+  // 최근 7일(오늘 포함)
+  const today = new Date();
+  const bars = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(today);
+    d.setDate(today.getDate()-i);
+    const ds = ymd(d);
+    const {pct} = progressOf(ds);
+
+    const h = Math.max(6, Math.round(pct*0.9)); // 0%도 조금은 보이게
+    const isToday = (ds === todayKey());
+
+    bars.push(`
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch">
+        <div title="${ds} (${pct}%)"
+          style="height:${h}px;border-radius:10px;border:1px solid var(--line);
+                 background:rgba(124,92,255,.20); box-shadow:${isToday ? "0 0 0 2px rgba(124,92,255,.18) inset" : "none"}">
+        </div>
+        <div class="small" style="text-align:center">${ds.slice(8,10)}</div>
+      </div>
+    `);
+  }
+  el.innerHTML = bars.join("");
+}
+
+let calYear = new Date().getFullYear();
+let calMonth0 = new Date().getMonth();
+
+function renderCalendar(){
+  const grid = $("#calGrid");
+  const label = $("#calLabel");
+  if(!grid || !label) return;
+
+  const first = new Date(calYear, calMonth0, 1);
+  const last = new Date(calYear, calMonth0+1, 0);
+  const startDow = first.getDay(); // 0 Sun
+  const today = new Date();
+
+  label.textContent = `월간 달력 · ${calYear}-${pad2(calMonth0+1)}`;
+
+  const dows = ["일","월","화","수","목","금","토"];
+  const cells = [];
+
+  // 요일 헤더
+  for(const d of dows){
+    cells.push(`
+      <div class="small" style="text-align:center;padding:6px 0;color:var(--muted)">${d}</div>
+    `);
+  }
+
+  // 빈칸
+  for(let i=0;i<startDow;i++){
+    cells.push(`<div style="height:44px;opacity:.25;border:1px solid rgba(255,255,255,.06);border-radius:10px"></div>`);
+  }
+
+  for(let day=1; day<=last.getDate(); day++){
+    const d = new Date(calYear, calMonth0, day);
+    const ds = ymd(d);
+    const {pct} = progressOf(ds);
+
+    // 퍼센트에 따라 진하기(단순)
+    const alpha = 0.08 + (pct/100)*0.35; // 0.08~0.43
+    const isToday = sameDay(d, today);
+
+    cells.push(`
+      <button type="button" data-date="${ds}"
+        style="height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
+               background:rgba(124,92,255,${alpha}); color:var(--text); text-align:left;
+               padding:8px; cursor:pointer; ${isToday ? "box-shadow:0 0 0 2px rgba(124,92,255,.20) inset;border-color:rgba(124,92,255,.55);" : ""}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+          <b style="font-size:12px">${day}</b>
+          <span style="font-size:11px;color:rgba(255,255,255,.75)">${pct}%</span>
+        </div>
+      </button>
+    `);
+  }
+
+  grid.innerHTML = cells.join("");
+
+  // 클릭 → 날짜 상세 팝업
+  grid.querySelectorAll("button[data-date]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const ds = btn.getAttribute("data-date");
+      openDayModal(ds);
+    });
+  });
+}
+
+function openDayModal(dateStr){
+  const back = $("#dayModalBackdrop");
+  const title = $("#dayModalTitle");
+  const meta = $("#dayModalMeta");
+  const diary = $("#dayModalDiary");
+  if(!back || !title || !meta || !diary) return;
+
+  const {done,total,pct} = progressOf(dateStr);
+  title.textContent = `📅 ${dateStr}`;
+  meta.textContent = `진행률 ${pct}% · 완료 ${done}/${total}`;
+  diary.textContent = (state.journals && state.journals[dateStr]) ? state.journals[dateStr] : "(일기 없음)";
+  back.style.display = "flex";
+}
+
+function closeDayModal(){
+  const back = $("#dayModalBackdrop");
+  if(back) back.style.display = "none";
+}
+
+// 달력 네비 버튼
+const btnPrevMonth = $("#btnPrevMonth");
+const btnNextMonth = $("#btnNextMonth");
+const btnThisMonth = $("#btnThisMonth");
+if(btnPrevMonth) btnPrevMonth.addEventListener("click", ()=>{
+  calMonth0--; if(calMonth0<0){ calMonth0=11; calYear--; }
+  renderAnalytics();
+});
+if(btnNextMonth) btnNextMonth.addEventListener("click", ()=>{
+  calMonth0++; if(calMonth0>11){ calMonth0=0; calYear++; }
+  renderAnalytics();
+});
+if(btnThisMonth) btnThisMonth.addEventListener("click", ()=>{
+  const n=new Date(); calYear=n.getFullYear(); calMonth0=n.getMonth();
+  renderAnalytics();
+});
+
+// 모달 닫기
+const btnCloseDayModal = $("#btnCloseDayModal");
+const dayModalBackdrop = $("#dayModalBackdrop");
+if(btnCloseDayModal) btnCloseDayModal.addEventListener("click", closeDayModal);
+if(dayModalBackdrop) dayModalBackdrop.addEventListener("click", (e)=>{
+  if(e.target && e.target.id==="dayModalBackdrop") closeDayModal();
+});
+
+function renderAnalytics(){
+  // 주 요약
+  const w = weekStats();
+  const weekAvg = $("#weekAvg");
+  const weekDays = $("#weekDays");
+  if(weekAvg) weekAvg.textContent = `${w.avg}%`;
+  if(weekDays) weekDays.textContent = `${w.count}`;
+
+  // 월 요약
+  const m = monthStats(calYear, calMonth0);
+  const monthAvg = $("#monthAvg");
+  const monthDays = $("#monthDays");
+  if(monthAvg) monthAvg.textContent = `${m.avg}%`;
+  if(monthDays) monthDays.textContent = `${m.cntDaysWithData}`;
+
+  renderWeekBars();
+  renderCalendar();
+}
+// ===== 끝 =====
