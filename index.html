@@ -329,6 +329,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
 </div>
 
 <!-- ========================= 뷰티 ========================= -->
+<!-- ========================= 뷰티 ========================= -->
 <div id="pageBeauty" class="page">
   <div class="wrap">
 
@@ -346,7 +347,8 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <div class="card">
+    <!-- 식단 -->
+    <div class="card" id="b_diet">
       <div class="section-title">🍽 식단</div>
       <div class="item"><input type="checkbox" data-key="diet_redmeat"><div><b>적색육 먹기</b><div class="desc">오늘 섭취 체크(기록용)</div></div></div>
       <div class="item"><input type="checkbox" data-key="diet_omad"><div><b>1일 1식 하기</b></div></div>
@@ -356,42 +358,51 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="diet_water"><div><b>물 1~2L 섭취</b></div></div>
     </div>
 
-        <div class="card">
+    <!-- 스킨케어 -->
+    <div class="card" id="b_skin">
       <div class="section-title">✨ 스킨케어</div>
-      <div class="item"><input type="checkbox" data-key="b_skin_cleanse"><div><b>매일 세안 & 스킨류 꼼꼼히 바르기</b></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_skin_mask_alt"><div><b>격일 팩하기</b><div class="desc">수분팩 / 각질팩 / 모공팩 중 1</div></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_skin_device"><div><b>디바이스 이용하기</b></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_skin_lifting_week"><div><b>리프팅 디바이스(주 1회)</b><div class="desc">주 1회면 체크(요일 상관없음)</div></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_skin_hair_sun"><div><b>일요일 헤어 트리트먼트 하기</b><div class="desc">일요일에만 체크해도 OK</div></div></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_cleanse"><div><b>매일 세안 & 스킨류 꼼꼼히 바르기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_mask_alt"><div><b>격일 팩하기</b><div class="desc">수분팩 / 각질팩 / 모공팩 중 1</div></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_device"><div><b>디바이스 이용하기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_lifting_week"><div><b>리프팅 디바이스(주 1회)</b><div class="desc">주 1회면 체크(요일 상관없음)</div></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_hair_sun"><div><b>일요일 헤어 트리트먼트 하기</b><div class="desc">일요일에만 체크해도 OK</div></div></div>
 
-      <div class="item"><input type="checkbox" data-key="b_skin_sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시~6시 목표</div></div></div></div>
+      <!-- 추가 요청 항목 -->
+      <div class="item"><input type="checkbox" data-key="skin_sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시~6시 목표</div></div></div>
+      <div class="item"><input type="checkbox" data-key="skin_selfie10"><div><b>하루 셀카 10장 이상 찍기</b><div class="desc">표정/각도/피부 체크</div></div></div>
     </div>
 
-    <div class="card">
+    <!-- 바디 -->
+    <div class="card" id="b_body">
       <div class="section-title">🧴 바디</div>
-      <div class="item"><input type="checkbox" data-key="b_body_lotion"><div><b>바디로션 & 오일 매일 바르기</b></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_body_calf"><div><b>종아리 마사지하기</b></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_body_masseur"><div><b>전신 안마기 사용하기</b></div></div></div>
-      <div class="item"><input type="checkbox" data-key="b_body_head"><div><b>머리 지압 마사지 하기</b></div></div></div>
+      <div class="item"><input type="checkbox" data-key="body_lotion"><div><b>바디로션 & 오일 매일 바르기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="body_calf"><div><b>종아리 마사지하기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="body_masseur"><div><b>전신 안마기 사용하기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="body_head"><div><b>머리 지압 마사지 하기</b></div></div>
     </div>
 
-<div class="card">
-  <div class="section-title">🏋️ 헬스</div>
-  <div class="item"><input type="checkbox" data-key="b_fit_stretch"><div><b>스트레칭하기</b></div></div></div>
-  <div class="item"><input type="checkbox" data-key="b_fit_strength"><div><b>근력운동 하기</b><div class="desc">스쿼트/허리/팔 덤벨/허벅지 안쪽</div></div></div></div>
-  <div class="item"><input type="checkbox" data-key="b_fit_cardio"><div><b>유산소 하기</b><div class="desc">자전거 & 마이마운틴 & 조깅</div></div></div></div>
-</div>
+    <!-- 헬스 -->
+    <div class="card" id="b_fit">
+      <div class="section-title">🏋️ 헬스</div>
+      <div class="item"><input type="checkbox" data-key="fit_stretch"><div><b>스트레칭하기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="fit_strength"><div><b>근력운동 하기</b><div class="desc">스쿼트/허리/팔 덤벨/허벅지 안쪽</div></div></div>
+      <div class="item"><input type="checkbox" data-key="fit_cardio"><div><b>유산소 하기</b><div class="desc">자전거 & 마이마운틴 & 조깅</div></div></div>
+    </div>
 
-    <div class="card">
+    <!-- 마인드컨트롤 -->
+    <div class="card" id="b_mind">
       <div class="section-title">🧠 마인드컨트롤</div>
-      <div class="item"><input type="checkbox" data-key="mind_image"><div><b>하루 셀카 10장 이상 찍기</b></div></div>
-      <div class="item"><input type="checkbox" data-key="mind_image"><div><b>책 10분 이상 읽기</b></div></div>
+      <div class="item"><input type="checkbox" data-key="mind_read10"><div><b>책 10분 이상 읽기</b><div class="desc">한달 2권 이상 목표</div></div></div>
       <div class="item"><input type="checkbox" data-key="mind_image"><div><b>내가 되고 싶은 이미지 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_ideal"><div><b>내가 만나고 싶은 이상형 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_future"><div><b>내가 되고 싶은 외모가 되었을 때 무엇을 할지 상상하기</b></div></div>
       <div class="item"><input type="checkbox" data-key="mind_inner"><div><b>외면만큼 내면 키우기</b><div class="desc">독서 & 교양(영상/강의/기사도 OK)</div></div></div>
-    </div> 
 
+      <!-- 추가 요청: 여행 -->
+      <div class="item"><input type="checkbox" data-key="mind_trip"><div><b>한달에 1~2회 여행가기</b><div class="desc">당일치기/근교/짧은 여행도 OK</div></div></div>
+    </div>
+
+    <!-- 메모 -->
     <div class="card">
       <div class="section-title">📝 오늘 몸상태 메모 (날짜별 저장)</div>
       <textarea id="b_journal" placeholder="예) 컨디션/수면/피부상태/붓기/근육통/기분/식단 만족도 등"></textarea>
@@ -403,6 +414,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div id="b_diaryList" style="display:none;"></div>
     </div>
 
+    <!-- 진행률 -->
     <div class="card">
       <div class="progress"><div class="bar" id="b_bar"></div></div>
       <div class="kpi">
@@ -411,7 +423,8 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       </div>
     </div>
 
-    <div class="card">
+    <!-- 분석 -->
+    <div class="card" id="b_analyticsCard">
       <div class="row" style="justify-content:space-between">
         <div>
           <div class="section-title" style="margin:0">📈 주/월 진행률</div>
@@ -452,6 +465,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </footer>
   </div>
 
+  <!-- 날짜 모달 -->
   <div id="b_dayModalBackdrop" class="modalbackdrop" style="display:none">
     <div class="modal">
       <div class="row" style="justify-content:space-between; align-items:center">
@@ -480,8 +494,6 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
   </div>
 </div>
-
-<script>
 /* ================== 탭 전환 ================== */
 const tabRoutine = document.getElementById("tabRoutine");
 const tabBeauty  = document.getElementById("tabBeauty");
