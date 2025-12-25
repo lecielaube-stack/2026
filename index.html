@@ -71,3 +71,24 @@ update();
 </script>
 </body>
 </html>
+<div class="item">
+  <div style="width:100%">
+    <b>📖 오늘 일기 (3줄)</b>
+    <textarea id="journal"
+      placeholder="1) 오늘 한 일
+2) 느낀 점
+3) 내일의 한 가지"
+      style="margin-top:6px"></textarea>
+  </div>
+</div>
+<script>
+// 일기 저장/불러오기
+const journalEl = document.getElementById("journal");
+if (journalEl) {
+  journalEl.value = state.journal || "";
+  journalEl.addEventListener("input", () => {
+    state.journal = journalEl.value;
+    save(state);
+  });
+}
+</script>
