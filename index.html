@@ -1,468 +1,162 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>나의 집중 대시보드</title>
-  <style>
-    :root{
-      --bg:#0b1020;
-      --card:#121a33;
-      --muted:#8ea0c9;
-      --text:#e9eeff;
-      --accent:#7c5cff;
-      --ok:#3ddc97;
-      --warn:#ffcc66;
-      --danger:#ff6b6b;
-      --line: rgba(255,255,255,.08);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-      background: radial-gradient(1200px 800px at 20% 0%, rgba(124,92,255,.20), transparent 60%),
-                  radial-gradient(1000px 700px at 80% 10%, rgba(61,220,151,.14), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-    }
-    header{
-      padding:28px 18px 12px;
-      max-width:1100px;
-      margin:0 auto;
-    }
-    .title{
-      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
-      border-bottom: 1px solid var(--line);
-      padding-bottom:16px;
-    }
-    h1{margin:0; font-size:26px; letter-spacing:-0.3px}
-    .subtitle{margin:6px 0 0; color:var(--muted); font-size:14px; line-height:1.45}
-    .chipbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
-    .chip{
-      font-size:12px; padding:7px 10px; border:1px solid var(--line);
-      border-radius:999px; color:var(--muted);
-      background: rgba(255,255,255,.03);
-    }
-    main{
-      max-width:1100px;
-      margin:0 auto;
-      padding:16px 18px 42px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-    }
-    @media (max-width: 920px){
-      main{grid-template-columns: 1fr; }
-    }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-    }
-    .card h2{
-      margin:0 0 10px;
-      font-size:16px;
-      letter-spacing:-0.2px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .small{
-      color:var(--muted);
-      font-size:12px;
-      font-weight:500;
-    }
-    .grid2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width: 520px){
-      .grid2{grid-template-columns:1fr;}
-    }
-    .item{
-      display:flex; align-items:flex-start; gap:10px;
-      padding:10px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.12);
-    }
-    .item:hover{border-color: rgba(124,92,255,.35)}
-    input[type="checkbox"]{
-      width:18px; height:18px; margin-top:2px;
-      accent-color: var(--accent);
-      cursor:pointer;
-      flex:0 0 auto;
-    }
-    .item-title{
-      font-size:14px; margin:0; line-height:1.35;
-    }
-    .item-desc{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.45;
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    button{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      padding:8px 10px;
-      border-radius:10px;
-      cursor:pointer;
-      font-size:13px;
-    }
-    button:hover{border-color: rgba(61,220,151,.35)}
-    .danger:hover{border-color: rgba(255,107,107,.45)}
-    .progress{
-      margin-top:10px;
-      width:100%;
-      height:10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.06);
-      overflow:hidden;
-      border:1px solid var(--line);
-    }
-    .bar{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, var(--accent), rgba(61,220,151,.9));
-      border-radius:999px;
-      transition: width .25s ease;
-    }
-    textarea, input[type="text"]{
-      width:100%;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
-      padding:10px 12px;
-      outline:none;
-      font-size:13px;
-    }
-    textarea{min-height:120px; resize:vertical; line-height:1.5}
-    .kpi{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-    .kpi > div{
-      padding:10px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.12);
-    }
-    .kpi .num{font-size:22px; font-weight:700; margin-top:6px}
-    .tag{
-      font-size:12px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      display:inline-block;
-      color:var(--muted);
-      background: rgba(255,255,255,.03);
-    }
-    .quote{
-      border-left:3px solid rgba(124,92,255,.65);
-      padding:8px 10px;
-      color:var(--muted);
-      background: rgba(124,92,255,.08);
-      border-radius:10px;
-      margin:10px 0 0;
-      font-size:13px;
-      line-height:1.55;
-    }
-    footer{
-      max-width:1100px;
-      margin:0 auto;
-      padding:0 18px 30px;
-      color:var(--muted);
-      font-size:12px;
-    }
-    a{color:inherit}
+<script>
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-    /* ===== 기록(최근 7일 + 월간달력) ===== */
-    .section-title{
-      margin:14px 0 8px;
-      font-size:14px;
-      letter-spacing:-0.2px;
-      display:flex; align-items:center; justify-content:space-between;
-      color:var(--text);
+  const STORAGE_KEY = "focus_dashboard_fixed";
+
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function todayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  }
+
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function saveState(state){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function getState(){
+    const s = loadState();
+    if(!s.daily) s.daily = {};
+    if(!s.daily[todayKey()]) s.daily[todayKey()] = {};
+    if(!s.meta) s.meta = {};
+    if(!s.journals) s.journals = {};
+    return s;
+  }
+
+  // ✅ 체크박스 선택: data-key 우선, 없으면 전체 체크박스
+  function allBoxes(){
+    const keyed = $$("input[type='checkbox'][data-key]");
+    if (keyed.length > 0) return keyed;
+    return $$("input[type='checkbox']");
+  }
+
+  function boxKey(box, idx){
+    return box.dataset.key || `box_${idx}`;
+  }
+
+  function setDaily(key, value){
+    const s = getState();
+    s.daily[todayKey()][key] = !!value;
+    saveState(s);
+  }
+
+  function getDaily(key){
+    const s = getState();
+    return !!(s.daily?.[todayKey()]?.[key]);
+  }
+
+  function setMeta(key, value){
+    const s = getState();
+    s.meta[key] = value;
+    saveState(s);
+  }
+
+  function getMeta(key){
+    const s = getState();
+    return s.meta?.[key] || "";
+  }
+
+  // ===== 진행률 =====
+  function updateProgress(){
+    const boxes = allBoxes();
+    const total = boxes.length;
+    const done = boxes.filter(b => b.checked).length;
+    const pct = total === 0 ? 0 : Math.round((done/total)*100);
+
+    const totalEl = $("#total");
+    const doneEl = $("#done");
+    const pctEl = $("#percent");
+    const barEl = $("#progressBar");
+
+    if (totalEl) totalEl.textContent = total;
+    if (doneEl) doneEl.textContent = done;
+    if (pctEl) pctEl.textContent = pct + "%";
+    if (barEl) barEl.style.width = pct + "%";
+  }
+
+  function init(){
+    const dateLabel = $("#dateLabel");
+    if (dateLabel) dateLabel.textContent = todayKey();
+
+    // 체크박스 바인딩
+    const boxes = allBoxes();
+    boxes.forEach((box, idx) => {
+      const k = boxKey(box, idx);
+      box.checked = getDaily(k);
+      box.addEventListener("change", () => {
+        setDaily(k, box.checked);
+        updateProgress();
+      });
+    });
+
+    // 메모/목표/링크(있으면만)
+    const topGoal = $("#topGoal");
+    const note = $("#note");
+    if (topGoal) {
+      topGoal.value = getMeta("topGoal");
+      topGoal.addEventListener("input", (e)=>setMeta("topGoal", e.target.value));
     }
-    .box{
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.12);
-      border-radius:12px;
-      padding:10px;
+    if (note) {
+      note.value = getMeta("note");
+      note.addEventListener("input", (e)=>setMeta("note", e.target.value));
     }
-    .table{
-      width:100%;
-      border-collapse: collapse;
-      font-size:12px;
-    }
-    .table th, .table td{
-      padding:8px 6px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      text-align:left;
-      vertical-align:middle;
-      color:var(--muted);
-    }
-    .table th{color: var(--text); font-weight:700;}
-    .pill{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size:11px;
-      white-space:nowrap;
-    }
-    .cal-head{
-      display:grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap:6px;
-      margin-bottom:6px;
-      font-size:11px;
-      color: var(--muted);
-    }
-    .cal-grid{
-      display:grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap:6px;
-    }
-    .cal-cell{
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.10);
-      border-radius:10px;
-      padding:8px 8px 6px;
-      min-height:52px;
-    }
-    .cal-cell .d{
-      font-size:12px;
-      color: var(--text);
-      font-weight:700;
-    }
-    .cal-cell .p{
-      margin-top:6px;
-      font-size:11px;
-      color: var(--muted);
-    }
-    .cal-cell.today{
-      border-color: rgba(124,92,255,.45);
-      box-shadow: 0 0 0 2px rgba(124,92,255,.12) inset;
-    }
-    .cal-cell.empty{
-      border-color: transparent;
-      background: transparent;
+    ["link1","link2","link3","link4"].forEach(id=>{
+      const el = $("#"+id);
+      if(!el) return;
+      el.value = getMeta(id);
+      el.addEventListener("input", (e)=>setMeta(id, e.target.value));
+    });
+
+    // 버튼(있으면만)
+    const btnToday = $("#btnToday");
+    if (btnToday) {
+      btnToday.addEventListener("click", () => {
+        const s = getState();
+        s.daily[todayKey()] = {};
+        saveState(s);
+        allBoxes().forEach(b => b.checked = false);
+        updateProgress();
+      });
     }
 
-    /* ===== 아침/저녁 루틴 구분 ===== */
-    .block{
-      margin-top:10px;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-    .block:first-child{
-      margin-top:0;
-      padding-top:0;
-      border-top:none;
-    }
-    .block h3{
-      margin:0 0 10px;
-      font-size:14px;
-      letter-spacing:-0.2px;
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    .badge{
-      font-size:11px;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      background: rgba(255,255,255,.03);
+    const btnClear = $("#btnClear");
+    if (btnClear) {
+      btnClear.addEventListener("click", () => {
+        if (!confirm("전체 데이터(체크/메모/링크)를 초기화할까요?")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      });
     }
 
-    /* ===== 모달(일기 팝업) ===== */
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:9999;
+    const btnOpenLinks = $("#btnOpenLinks");
+    if (btnOpenLinks) {
+      btnOpenLinks.addEventListener("click", () => {
+        const urls = ["link1","link2","link3","link4"]
+          .map(id => ($("#"+id)?.value || "").trim())
+          .filter(u => u.length > 0);
+        if (urls.length === 0) return alert("열 링크가 없어요. URL을 먼저 적어주세요.");
+        urls.forEach(u => window.open(u, "_blank"));
+      });
     }
-    .modal{
-      width:min(720px, 100%);
-      border:1px solid var(--line);
-      border-radius:16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
-      padding:14px;
+
+    const btnExport = $("#btnExport");
+    if (btnExport) {
+      btnExport.addEventListener("click", () => {
+        const data = loadState();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "focus-dashboard-backup.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
     }
-    .modal h2{
-      margin:0 0 8px;
-      font-size:16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .modal .hint{
-      color:var(--muted);
-      font-size:12px;
-      margin:0 0 10px;
-      line-height:1.45;
-    }
-    .modal .actions{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      margin-top:10px;
-      flex-wrap:wrap;
-    }
-    .ghost{
-      background: transparent;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="title">
-      <div>
-        <h1>나의 선택과 집중 대시보드</h1>
-        <p class="subtitle">
-          영어/건강/생활단순화/루틴/자존감 — 오늘 해야 할 것만 선명하게.
-          체크하면 자동 저장됩니다.
-        </p>
-        <div class="chipbar">
-          <span class="chip">영어</span>
-          <span class="chip">런닝</span>
-          <span class="chip">근력</span>
-          <span class="chip">절약</span>
-          <span class="chip">루틴</span>
-          <span class="chip">인생계획</span>
-          <span class="chip">자존감</span>
-          <span class="chip">강아지</span>
-          <span class="chip">마음챙김</span>
-          <span class="chip">식단</span>
-          <span class="chip">스트릭</span>
-        </div>
-      </div>
-      <div class="row">
-        <button id="btnToday">오늘로 리셋(일일)</button>
-        <button class="danger" id="btnClear">전체 초기화</button>
-      </div>
-    </div>
-  </header>
 
-  <main>
-    <!-- LEFT -->
-    <section class="card">
-      <h2>
-        오늘의 체크리스트
-        <span class="small" id="dateLabel"></span>
-      </h2>
+    updateProgress();
+  }
 
-      <div id="checklist">
-        <!-- 🌙 아침 루틴 -->
-        <div class="block">
-          <h3>🌙 아침 루틴 <span class="badge">가볍게 시작</span></h3>
-          <div class="grid2">
-            <div class="item">
-              <input type="checkbox" data-key="meditation" />
-              <div>
-                <p class="item-title">마음챙김 명상</p>
-                <p class="item-desc">5~10분 호흡 집중. 잘하려 하지 말고 그냥 앉기.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="running" />
-              <div>
-                <p class="item-title">러닝 (또는 빠른 걷기)</p>
-                <p class="item-desc">컨디션 따라 강도 조절, 20~40분 목표.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="strength" />
-              <div>
-                <p class="item-title">근력운동 20분</p>
-                <p class="item-desc">스쿼트/푸쉬업/풀업/플랭크 등.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="dog_walk" />
-              <div>
-                <p class="item-title">강아지 산책</p>
-                <p class="item-desc">하루 1회 이상, 짧아도 OK. 함께 걷기.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="dog_teeth" />
-              <div>
-                <p class="item-title">강아지 양치</p>
-                <p class="item-desc">매일 1회. 건강 + 신뢰 쌓기.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="eng_app" />
-              <div>
-                <p class="item-title">영어 어플 15분</p>
-                <p class="item-desc">짧게라도 매일. (리스닝/스피킹 우선)</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="worksheet" />
-              <div>
-                <p class="item-title">학습지 1회</p>
-                <p class="item-desc">가볍게 1장이라도 완료.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="friend" />
-              <div>
-                <p class="item-title">외국인 친구 만들기 행동 1개</p>
-                <p class="item-desc">DM/모임 신청/1문장 대화 등 “행동”만 체크.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🌙 저녁 루틴 -->
-        <div class="block">
-          <h3>🌙 저녁 루틴 <span class="badge">정리 & 지속</span></h3>
-          <div class="grid2">
-            <div class="item">
-              <input type="checkbox" data-key="diet" />
-              <div>
-                <p class="item-title">식단 조절 체크</p>
-                <p class="item-desc">적색육/소금물/버터 섭취를 “의식적으로” 관리.</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="one_meal" />
-              <div>
-                <p class="item-title">1일 1식</p>
-                <p class="item-desc">오늘의 식사 1회만(컨디션 최우선).</p>
-              </div>
-            </div>
-
-            <div class="item">
-              <input type="checkbox" data-key="focus" />
-              <div>
-                <p class="item-title">선택과 집중: 불필요 1개 삭제</p>
-                <p class="item-desc">앱/구독/약속
+  init();
+</script>
