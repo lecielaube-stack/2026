@@ -4,163 +4,127 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>나의 선택과 집중 대시보드</title>
-
 <style>
 :root{
-  --bg:#0b1020;
-  --card:#121a33;
-  --text:#e9eeff;
-  --muted:#8ea0c9;
-  --line:rgba(255,255,255,.08);
-  --accent:#7c5cff;
-  --ok:#3ddc97;
+  --bg:#0b1020; --card:#121a33; --text:#e9eeff; --muted:#8ea0c9;
+  --line:rgba(255,255,255,.10); --accent:#7c5cff; --ok:#3ddc97; --danger:#ff6b6b;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  background:linear-gradient(180deg,#0b1020,#0e1430);
-  color:var(--text);
+  margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  background:linear-gradient(180deg,#0b1020,#0e1430);color:var(--text)
 }
-.wrap{max-width:900px;margin:0 auto;padding:18px}
+.wrap{max-width:920px;margin:0 auto;padding:18px}
 h1{margin:0 0 6px}
-.sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 16px;line-height:1.45}
 
 .card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:14px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:14px;margin-bottom:14px
 }
-.section-title{font-size:15px;margin-bottom:10px}
+.topbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+button{
+  border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);
+  padding:9px 12px;border-radius:12px;font-size:13px;cursor:pointer
+}
+button:hover{border-color:rgba(124,92,255,.35)}
+.danger:hover{border-color:rgba(255,107,107,.55)}
+
+.section-title{font-size:15px;margin:0 0 10px}
+.small{font-size:12px;color:var(--muted);font-weight:600}
 
 .item{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  margin-bottom:8px;
-  background:rgba(0,0,0,.15);
+  display:flex;gap:10px;align-items:flex-start;
+  padding:10px;border-radius:12px;border:1px solid var(--line);
+  margin-bottom:8px;background:rgba(0,0,0,.15)
 }
-input[type=checkbox]{width:18px;height:18px;margin-top:2px}
-.desc{font-size:12px;color:var(--muted)}
+input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
 
 textarea{
-  width:100%;
-  min-height:120px;
-  background:rgba(0,0,0,.2);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:10px;
-  color:var(--text);
-  font-size:13px;
-  resize:vertical;
+  width:100%;min-height:120px;background:rgba(0,0,0,.2);
+  border:1px solid var(--line);border-radius:12px;padding:10px;
+  color:var(--text);font-size:13px;resize:vertical;line-height:1.5;outline:none
 }
 
-.progress{
-  height:10px;
-  background:rgba(255,255,255,.08);
-  border-radius:999px;
-  overflow:hidden;
-  margin-top:12px;
-}
-.bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,var(--accent),var(--ok));
-}
+.progress{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:12px}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--ok))}
 
-.kpi{
-  display:flex;
-  gap:10px;
-  margin-top:10px;
-}
+.kpi{display:flex;gap:10px;margin-top:10px}
 .kpi .box{
-  flex:1;
-  background:rgba(0,0,0,.2);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:10px;
+  flex:1;background:rgba(0,0,0,.2);border:1px solid var(--line);
+  border-radius:12px;padding:10px
 }
 .num{font-size:22px;font-weight:800;margin-top:6px}
 
-footer{color:var(--muted);font-size:12px;margin-top:10px}
+.listCard{
+  border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:10px;
+  background:rgba(0,0,0,.12)
+}
+pre{white-space:pre-wrap;margin:8px 0 0;color:var(--text);font-family:inherit;font-size:13px;line-height:1.5}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
 </style>
 </head>
 
 <body>
 <div class="wrap">
-  <h1>나의 선택과 집중 대시보드</h1>
-  <div class="sub">체크하면 자동 저장 · 진행률 즉시 반영</div>
-
-  <!-- 🌅 아침 루틴 -->
   <div class="card">
+    <div class="topbar">
+      <div>
+        <h1>나의 선택과 집중 대시보드</h1>
+        <div class="sub">체크/일기는 자동 저장(날짜별) · 진행률 즉시 반영</div>
+        <div class="small">오늘 날짜: <span id="dateLabel"></span></div>
+      </div>
+      <div class="btnrow">
+        <button id="btnTodayReset">오늘만 리셋</button>
+        <button class="danger" id="btnClearAll">전체 초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌅 아침 -->
+  <div class="card" id="am">
     <div class="section-title">🌅 아침 루틴</div>
-    <div class="item">
-      <input type="checkbox" data-key="med">
-      <div>마음챙김 명상<div class="desc">5~10분, 그냥 앉기</div></div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="run">
-      <div>러닝 / 빠른 걷기<div class="desc">20~40분</div></div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="strength">
-      <div>근력운동 20분</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="dogwalk">
-      <div>강아지 산책</div>
-    </div>
+
+    <div class="item"><input type="checkbox" data-key="med"><div><b>마음챙김 명상</b><div class="desc">5~10분, 그냥 앉기</div></div></div>
+    <div class="item"><input type="checkbox" data-key="run"><div><b>러닝/빠른 걷기</b><div class="desc">20~40분</div></div></div>
+    <div class="item"><input type="checkbox" data-key="strength"><div><b>근력운동 20분</b></div></div>
+    <div class="item"><input type="checkbox" data-key="dogwalk"><div><b>강아지 산책</b></div></div>
   </div>
 
-  <!-- 🌙 저녁 루틴 -->
-  <div class="card">
+  <!-- 🌙 저녁 -->
+  <div class="card" id="pm">
     <div class="section-title">🌙 저녁 루틴</div>
-    <div class="item">
-      <input type="checkbox" data-key="diet">
-      <div>식단 조절</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="omad">
-      <div>1일 1식</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="dogcare">
-      <div>강아지 양치 / 위생</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="cleanup">
-      <div>불필요한 것 1개 삭제</div>
-    </div>
-  </div>
 
-  <!-- 📋 자기계발 -->
-  <div class="card">
-    <div class="section-title">📋 자기계발</div>
-    <div class="item">
-      <input type="checkbox" data-key="eng">
-      <div>영어 어플 15분</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="worksheet">
-      <div>학습지 1회</div>
-    </div>
-    <div class="item">
-      <input type="checkbox" data-key="friend">
-      <div>외국인 친구 행동 1개</div>
-    </div>
+    <div class="item"><input type="checkbox" data-key="diet"><div><b>식단 조절</b><div class="desc">적색육/소금물/버터 섭취 의식</div></div></div>
+    <div class="item"><input type="checkbox" data-key="omad"><div><b>1일 1식</b></div></div>
+    <div class="item"><input type="checkbox" data-key="save"><div><b>절약: 돈 안 쓰기</b></div></div>
+    <div class="item"><input type="checkbox" data-key="simplify"><div><b>생활 단순화: 불필요 1개 삭제</b></div></div>
+    <div class="item"><input type="checkbox" data-key="gear"><div><b>런닝조끼/노트북 준비</b></div></div>
+    <div class="item"><input type="checkbox" data-key="computer"><div><b>컴 가까이 루틴 1회</b><div class="desc">25분 집중 + 기록</div></div></div>
+    <div class="item"><input type="checkbox" data-key="lifeplan"><div><b>인생 계획 10분</b></div></div>
+    <div class="item"><input type="checkbox" data-key="esteem"><div><b>자존감 채우기</b><div class="desc">오늘 잘한 것 1개 적기</div></div></div>
+
+    <div class="item"><input type="checkbox" data-key="eng"><div><b>영어 어플 15분</b></div></div>
+    <div class="item"><input type="checkbox" data-key="worksheet"><div><b>학습지 1회</b></div></div>
+    <div class="item"><input type="checkbox" data-key="friend"><div><b>외국인 친구 행동 1개</b></div></div>
+
+    <div class="item"><input type="checkbox" data-key="dogcare"><div><b>강아지 케어</b><div class="desc">양치(매일) / 목욕·위생(필요시)</div></div></div>
   </div>
 
   <!-- 📖 일기 -->
   <div class="card">
-    <div class="section-title">📖 오늘 일기 (3줄)</div>
-    <textarea id="journal" placeholder="1) 오늘 한 일
-2) 느낀 점
-3) 내일의 한 가지"></textarea>
+    <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
+    <textarea id="journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
+
+    <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
+      <button id="btnDiaryList">📚 일기 기록 보기</button>
+      <button id="btnDiaryExport">⬇️ 일기 백업(JSON)</button>
+    </div>
+
+    <div id="diaryList" style="display:none;"></div>
   </div>
 
   <!-- 📊 진행률 -->
@@ -173,49 +137,132 @@ footer{color:var(--muted);font-size:12px;margin-top:10px}
   </div>
 
   <footer>
-    ✔ 데이터는 이 브라우저(LocalStorage)에만 저장됩니다.
+    ✔ 이 페이지의 체크/일기 데이터는 <b>이 브라우저(LocalStorage)</b>에만 저장됩니다.<br/>
+    ✔ 폰을 바꾸거나 브라우저 데이터를 지우면 사라질 수 있어요 → “일기 백업(JSON)” 권장.
   </footer>
 </div>
 
 <script>
 const $$ = s => Array.from(document.querySelectorAll(s));
 const $ = s => document.querySelector(s);
-const KEY = "final_focus_dashboard";
+const STORAGE_KEY = "focus_dashboard_v2";
 
-function load(){ return JSON.parse(localStorage.getItem(KEY)||"{}"); }
-function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+const todayKey = () => new Date().toISOString().slice(0,10);
+
+function load(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function save(v){ localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
 
 const state = load();
+if(!state.daily) state.daily = {};
+if(!state.journals) state.journals = {};
+const T = todayKey();
+if(!state.daily[T]) state.daily[T] = {};
+
+$("#dateLabel").textContent = T;
+
+function boxes(){
+  return $$("input[type=checkbox][data-key]");
+}
 
 function update(){
-  const boxes = $$("input[type=checkbox]");
-  const done = boxes.filter(b=>b.checked).length;
-  const total = boxes.length;
+  const b = boxes();
+  const total = b.length;
+  const done = b.filter(x => x.checked).length;
   const pct = total ? Math.round(done/total*100) : 0;
-
   $("#done").textContent = done;
   $("#total").textContent = total;
   $("#percent").textContent = pct + "%";
   $("#bar").style.width = pct + "%";
 }
 
-$$("input[type=checkbox]").forEach(b=>{
-  b.checked = !!state[b.dataset.key];
+boxes().forEach(b=>{
+  const k = b.dataset.key;
+  b.checked = !!state.daily[T][k];
   b.addEventListener("change", ()=>{
-    state[b.dataset.key] = b.checked;
+    state.daily[T][k] = b.checked;
     save(state);
     update();
   });
 });
 
+// 일기: 날짜별
 const journal = $("#journal");
-if(journal){
-  journal.value = state.journal || "";
-  journal.addEventListener("input", ()=>{
-    state.journal = journal.value;
-    save(state);
+journal.value = state.journals[T] || "";
+journal.addEventListener("input", ()=>{
+  state.journals[T] = journal.value;
+  save(state);
+});
+
+// 일기 목록
+function esc(s){ return (s||"").replace(/</g,"&lt;"); }
+
+function renderDiaryList(){
+  const box = $("#diaryList");
+  const entries = Object.entries(state.journals || {})
+    .filter(([d, txt]) => (txt||"").trim().length > 0)
+    .sort((a,b)=> b[0].localeCompare(a[0]));
+
+  if(entries.length === 0){
+    box.innerHTML = `<div class="small">아직 저장된 일기가 없어요.</div>`;
+    return;
+  }
+
+  box.innerHTML = entries.map(([d, txt]) => `
+    <div class="listCard">
+      <div class="topbar" style="padding:0;margin:0;border:0">
+        <b>${d}</b>
+        <button class="danger" type="button" data-del="${d}">삭제</button>
+      </div>
+      <pre>${esc(txt)}</pre>
+    </div>
+  `).join("");
+
+  box.querySelectorAll("button[data-del]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const d = btn.getAttribute("data-del");
+      if(!confirm(`${d} 일기를 삭제할까요?`)) return;
+      delete state.journals[d];
+      save(state);
+      renderDiaryList();
+    });
   });
 }
+
+$("#btnDiaryList").addEventListener("click", ()=>{
+  const box = $("#diaryList");
+  const open = box.style.display !== "none";
+  box.style.display = open ? "none" : "block";
+  if(!open) renderDiaryList();
+});
+
+$("#btnDiaryExport").addEventListener("click", ()=>{
+  const data = { journals: state.journals || {} };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "diary-backup.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+$("#btnTodayReset").addEventListener("click", ()=>{
+  if(!confirm("오늘 체크와 오늘 일기만 리셋할까요?")) return;
+  state.daily[T] = {};
+  state.journals[T] = "";
+  save(state);
+  boxes().forEach(b=> b.checked = false);
+  journal.value = "";
+  update();
+});
+
+$("#btnClearAll").addEventListener("click", ()=>{
+  if(!confirm("전체 데이터(체크/일기)를 모두 초기화할까요?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+});
 
 update();
 </script>
