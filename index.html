@@ -219,7 +219,28 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
 
     <div class="card">
-      <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
+  <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
+  <textarea id="r_journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
+
+  <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
+    <button id="r_btnDiaryList" type="button">📚 일기 기록 보기</button>
+    <button id="r_btnDiaryExport" type="button">⬇️ 일기 백업(JSON)</button>
+  </div>
+
+  <div id="r_diaryList" style="display:none;"></div>
+</div>
+
+<!-- ✅ 여기부터 인생 계획 카드 -->
+<div class="card">
+  <div class="section-title">🧭 인생 계획 기록 (날짜별 저장)</div>
+  <textarea id="r_lifePlan" placeholder="장기 목표 / 이번 달 목표 / 방향 정리"></textarea>
+
+  <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
+    <button id="r_btnLifePlanSave" type="button">💾 저장</button>
+  </div>
+
+  <div id="r_lifePlanList" style="display:none;"></div>
+</div>
       <textarea id="r_journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
 
       <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
