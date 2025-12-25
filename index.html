@@ -6,44 +6,53 @@
 <title>나의 대시보드</title>
 
 <style>
+:root{
+  --bg:#0b1020; --card:#121a33; --text:#e9eeff; --muted:#8ea0c9;
+  --line:rgba(255,255,255,.10); --accent:#7c5cff;
+}
+*{box-sizing:border-box}
 body{
   margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  background:#0b1020;color:#e9eeff
+  background:linear-gradient(180deg,#0b1020,#0e1430);color:var(--text)
 }
 .top{
   display:flex;gap:10px;padding:14px;
-  border-bottom:1px solid rgba(255,255,255,.1);
+  border-bottom:1px solid var(--line);
   background:#0e1430
 }
 .top button{
-  padding:10px 14px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.15);
+  padding:10px 14px;border-radius:14px;
+  border:1px solid var(--line);
   background:rgba(255,255,255,.05);
-  color:#fff;cursor:pointer
+  color:#fff;cursor:pointer;font-size:14px
 }
 .top button.active{
-  border-color:#7c5cff;background:rgba(124,92,255,.25)
+  border-color:var(--accent);
+  background:rgba(124,92,255,.25)
 }
 .page{display:none}
 .page.active{display:block}
 
 .wrap{max-width:920px;margin:0 auto;padding:18px}
 .card{
-  background:#121a33;border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:14px;margin-bottom:14px
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px
 }
-.section-title{font-size:15px;margin-bottom:10px}
+.section{font-size:15px;font-weight:700;margin-bottom:10px}
 .item{
-  display:flex;gap:10px;align-items:flex-start;
+  display:flex;gap:10px;align-items:center;
   padding:10px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid var(--line);
   margin-bottom:8px;background:rgba(0,0,0,.15)
 }
-input{width:18px;height:18px}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
 textarea{
-  width:100%;min-height:120px;
+  width:100%;min-height:110px;
   background:rgba(0,0,0,.25);
-  border:1px solid rgba(255,255,255,.15);
+  border:1px solid var(--line);
   border-radius:12px;padding:10px;color:#fff
 }
 .progress{height:10px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
@@ -62,24 +71,22 @@ textarea{
 <div id="routine" class="page active">
 <div class="wrap">
 
+<div class="card"><h2>선택과 집중 루틴</h2></div>
+
 <div class="card">
-  <h2>선택과 집중 루틴</h2>
+  <div class="section">🌅 아침</div>
+  <div class="item"><input type="checkbox"> 명상</div>
+  <div class="item"><input type="checkbox"> 러닝</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🌅 아침</div>
-  <div class="item"><input type="checkbox">명상</div>
-  <div class="item"><input type="checkbox">러닝</div>
+  <div class="section">🌙 저녁</div>
+  <div class="item"><input type="checkbox"> 영어</div>
+  <div class="item"><input type="checkbox"> 절약</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🌙 저녁</div>
-  <div class="item"><input type="checkbox">영어</div>
-  <div class="item"><input type="checkbox">절약</div>
-</div>
-
-<div class="card">
-  <div class="section-title">📖 일기</div>
+  <div class="section">📖 일기</div>
   <textarea placeholder="오늘 기록"></textarea>
 </div>
 
@@ -94,24 +101,22 @@ textarea{
 <div id="beauty" class="page">
 <div class="wrap">
 
+<div class="card"><h2>외모 가꾸기 집중</h2></div>
+
 <div class="card">
-  <h2>외모 가꾸기 집중</h2>
+  <div class="section">🍽 식단</div>
+  <div class="item"><input type="checkbox"> 적색육</div>
+  <div class="item"><input type="checkbox"> 물 1~2L</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🍽 식단</div>
-  <div class="item"><input type="checkbox">적색육</div>
-  <div class="item"><input type="checkbox">물 1~2L</div>
+  <div class="section">✨ 스킨케어</div>
+  <div class="item"><input type="checkbox"> 세안</div>
+  <div class="item"><input type="checkbox"> 팩</div>
 </div>
 
 <div class="card">
-  <div class="section-title">✨ 스킨케어</div>
-  <div class="item"><input type="checkbox">세안</div>
-  <div class="item"><input type="checkbox">팩</div>
-</div>
-
-<div class="card">
-  <div class="section-title">📝 몸상태 메모</div>
+  <div class="section">📝 몸상태 메모</div>
   <textarea placeholder="컨디션 기록"></textarea>
 </div>
 
