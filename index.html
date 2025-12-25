@@ -8,7 +8,7 @@
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --text:#e9eeff; --muted:#8ea0c9;
-  --line:rgba(255,255,255,.1); --accent:#7c5cff; --ok:#3ddc97;
+  --line:rgba(255,255,255,.10); --accent:#7c5cff;
 }
 *{box-sizing:border-box}
 body{
@@ -18,13 +18,13 @@ body{
 .top{
   display:flex;gap:10px;padding:14px;
   border-bottom:1px solid var(--line);
-  background:#0e1430;position:sticky;top:0;z-index:10
+  background:#0e1430
 }
 .top button{
   padding:10px 14px;border-radius:14px;
   border:1px solid var(--line);
   background:rgba(255,255,255,.05);
-  color:#fff;cursor:pointer
+  color:#fff;cursor:pointer;font-size:14px
 }
 .top button.active{
   border-color:var(--accent);
@@ -35,34 +35,28 @@ body{
 
 .wrap{max-width:920px;margin:0 auto;padding:18px}
 .card{
-  background:var(--card);border:1px solid var(--line);
-  border-radius:18px;padding:14px;margin-bottom:14px
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px
 }
-h1{margin:0 0 6px}
-.sub{color:var(--muted);font-size:14px;margin-bottom:10px}
-.section-title{font-size:15px;margin-bottom:10px}
+.section{font-size:15px;font-weight:700;margin-bottom:10px}
 .item{
-  display:flex;gap:10px;align-items:flex-start;
+  display:flex;gap:10px;align-items:center;
   padding:10px;border-radius:12px;
   border:1px solid var(--line);
   margin-bottom:8px;background:rgba(0,0,0,.15)
 }
 input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
 textarea{
-  width:100%;min-height:120px;
+  width:100%;min-height:110px;
   background:rgba(0,0,0,.25);
   border:1px solid var(--line);
-  border-radius:12px;padding:10px;color:var(--text)
+  border-radius:12px;padding:10px;color:#fff
 }
 .progress{height:10px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--ok))}
-.kpi{display:flex;gap:10px;margin-top:10px}
-.kpi .box{
-  flex:1;background:rgba(0,0,0,.2);
-  border:1px solid var(--line);
-  border-radius:12px;padding:10px
-}
-.num{font-size:22px;font-weight:800;margin-top:6px}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,#7c5cff,#3ddc97)}
 </style>
 </head>
 
@@ -77,33 +71,27 @@ textarea{
 <div id="routine" class="page active">
 <div class="wrap">
 
+<div class="card"><h2>선택과 집중 루틴</h2></div>
+
 <div class="card">
-  <h1>선택과 집중 루틴</h1>
-  <div class="sub">체크/일기 자동 저장 · 진행률 계산</div>
+  <div class="section">🌅 아침</div>
+  <div class="item"><input type="checkbox"> 명상</div>
+  <div class="item"><input type="checkbox"> 러닝</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🌅 아침</div>
-  <div class="item"><input type="checkbox" data-k="r_med">명상</div>
-  <div class="item"><input type="checkbox" data-k="r_run">러닝</div>
+  <div class="section">🌙 저녁</div>
+  <div class="item"><input type="checkbox"> 영어</div>
+  <div class="item"><input type="checkbox"> 절약</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🌙 저녁</div>
-  <div class="item"><input type="checkbox" data-k="r_eng">영어</div>
-  <div class="item"><input type="checkbox" data-k="r_save">절약</div>
+  <div class="section">📖 일기</div>
+  <textarea placeholder="오늘 기록"></textarea>
 </div>
 
 <div class="card">
-  <div class="section-title">📖 일기</div>
-  <textarea id="routineMemo" placeholder="오늘 기록"></textarea>
-</div>
-
-<div class="card">
-  <div class="progress"><div class="bar" id="routineBar"></div></div>
-  <div class="kpi">
-    <div class="box">진행률<div class="num" id="routinePct">0%</div></div>
-  </div>
+  <div class="progress"><div class="bar"></div></div>
 </div>
 
 </div>
@@ -113,81 +101,50 @@ textarea{
 <div id="beauty" class="page">
 <div class="wrap">
 
+<div class="card"><h2>외모 가꾸기 집중</h2></div>
+
 <div class="card">
-  <h1>외모 가꾸기 집중</h1>
-  <div class="sub">식단 · 스킨케어 · 바디 · 헬스 · 마인드</div>
+  <div class="section">🍽 식단</div>
+  <div class="item"><input type="checkbox"> 적색육</div>
+  <div class="item"><input type="checkbox"> 물 1~2L</div>
 </div>
 
 <div class="card">
-  <div class="section-title">🍽 식단</div>
-  <div class="item"><input type="checkbox" data-k="b_meat">적색육</div>
-  <div class="item"><input type="checkbox" data-k="b_water">물 1~2L</div>
+  <div class="section">✨ 스킨케어</div>
+  <div class="item"><input type="checkbox"> 세안</div>
+  <div class="item"><input type="checkbox"> 팩</div>
 </div>
 
 <div class="card">
-  <div class="section-title">✨ 스킨케어</div>
-  <div class="item"><input type="checkbox" data-k="b_clean">세안</div>
-  <div class="item"><input type="checkbox" data-k="b_pack">팩</div>
+  <div class="section">📝 몸상태 메모</div>
+  <textarea placeholder="컨디션 기록"></textarea>
 </div>
 
 <div class="card">
-  <div class="section-title">📝 몸상태 메모</div>
-  <textarea id="beautyMemo" placeholder="컨디션 / 피부 / 붓기"></textarea>
-</div>
-
-<div class="card">
-  <div class="progress"><div class="bar" id="beautyBar"></div></div>
-  <div class="kpi">
-    <div class="box">진행률<div class="num" id="beautyPct">0%</div></div>
-  </div>
+  <div class="progress"><div class="bar"></div></div>
 </div>
 
 </div>
 </div>
 
 <script>
-/* ===== 탭 ===== */
-const tabRoutine=tabBeauty=document.getElementById("tabRoutine");
-const tabBeautyBtn=document.getElementById("tabBeauty");
+const tabRoutine=document.getElementById("tabRoutine");
+const tabBeauty=document.getElementById("tabBeauty");
 const routine=document.getElementById("routine");
 const beauty=document.getElementById("beauty");
 
-tabRoutine.onclick=()=>{routine.classList.add("active");beauty.classList.remove("active");tabRoutine.classList.add("active");tabBeautyBtn.classList.remove("active");}
-tabBeautyBtn.onclick=()=>{beauty.classList.add("active");routine.classList.remove("active");tabBeautyBtn.classList.add("active");tabRoutine.classList.remove("active");}
-
-/* ===== 공통 엔진 ===== */
-function engine(prefix, memoId, barId, pctId){
-  const key=`dashboard_${prefix}`;
-  const state=JSON.parse(localStorage.getItem(key)||"{}");
-  const boxes=[...document.querySelectorAll(`input[data-k^="${prefix}_"]`)];
-  const memo=document.getElementById(memoId);
-
-  boxes.forEach(b=>{
-    b.checked=!!state[b.dataset.k];
-    b.onchange=()=>{
-      state[b.dataset.k]=b.checked;
-      save();
-    };
-  });
-
-  memo.value=state.memo||"";
-  memo.oninput=()=>{state.memo=memo.value;save();};
-
-  function save(){
-    localStorage.setItem(key,JSON.stringify(state));
-    update();
-  }
-  function update(){
-    const done=boxes.filter(b=>b.checked).length;
-    const pct=Math.round(done/boxes.length*100)||0;
-    document.getElementById(barId).style.width=pct+"%";
-    document.getElementById(pctId).textContent=pct+"%";
-  }
-  update();
-}
-
-engine("r","routineMemo","routineBar","routinePct");
-engine("b","beautyMemo","beautyBar","beautyPct");
+tabRoutine.onclick=()=>{
+  routine.classList.add("active");
+  beauty.classList.remove("active");
+  tabRoutine.classList.add("active");
+  tabBeauty.classList.remove("active");
+};
+tabBeauty.onclick=()=>{
+  beauty.classList.add("active");
+  routine.classList.remove("active");
+  tabBeauty.classList.add("active");
+  tabRoutine.classList.remove("active");
+};
 </script>
 
 </body>
