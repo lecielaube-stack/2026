@@ -3,46 +3,189 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>대시보드(안전모드)</title>
+<title>나의 선택과 집중 대시보드</title>
+
 <style>
-body{margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:#0b1020;color:#e9eeff}
+:root{
+  --bg:#0b1020;
+  --card:#121a33;
+  --text:#e9eeff;
+  --muted:#8ea0c9;
+  --line:rgba(255,255,255,.08);
+  --accent:#7c5cff;
+  --ok:#3ddc97;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  background:linear-gradient(180deg,#0b1020,#0e1430);
+  color:var(--text);
+}
 .wrap{max-width:900px;margin:0 auto;padding:18px}
-.card{background:#121a33;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;margin:12px 0}
-.item{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);margin:10px 0}
-input{width:18px;height:18px;margin-top:2px}
-.progress{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:12px}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,#7c5cff,#3ddc97)}
-.kpi{display:flex;gap:10px;margin-top:10px}
-.kpi .box{flex:1;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px}
+h1{margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.section-title{font-size:15px;margin-bottom:10px}
+
+.item{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  margin-bottom:8px;
+  background:rgba(0,0,0,.15);
+}
+input[type=checkbox]{width:18px;height:18px;margin-top:2px}
+.desc{font-size:12px;color:var(--muted)}
+
+textarea{
+  width:100%;
+  min-height:120px;
+  background:rgba(0,0,0,.2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  color:var(--text);
+  font-size:13px;
+  resize:vertical;
+}
+
+.progress{
+  height:10px;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:12px;
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--ok));
+}
+
+.kpi{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.kpi .box{
+  flex:1;
+  background:rgba(0,0,0,.2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+}
 .num{font-size:22px;font-weight:800;margin-top:6px}
+
+footer{color:var(--muted);font-size:12px;margin-top:10px}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-  <h2>대시보드 (안전모드)</h2>
-  <p style="color:#8ea0c9">체크하면 진행률이 바로 올라가면 정상입니다.</p>
+  <h1>나의 선택과 집중 대시보드</h1>
+  <div class="sub">체크하면 자동 저장 · 진행률 즉시 반영</div>
 
+  <!-- 🌅 아침 루틴 -->
   <div class="card">
-    <div class="item"><input type="checkbox" data-key="a"> 영어 어플 15분</div>
-    <div class="item"><input type="checkbox" data-key="b"> 러닝/걷기</div>
-    <div class="item"><input type="checkbox" data-key="c"> 마음챙김(명상/일기)</div>
+    <div class="section-title">🌅 아침 루틴</div>
+    <div class="item">
+      <input type="checkbox" data-key="med">
+      <div>마음챙김 명상<div class="desc">5~10분, 그냥 앉기</div></div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="run">
+      <div>러닝 / 빠른 걷기<div class="desc">20~40분</div></div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="strength">
+      <div>근력운동 20분</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="dogwalk">
+      <div>강아지 산책</div>
+    </div>
+  </div>
 
+  <!-- 🌙 저녁 루틴 -->
+  <div class="card">
+    <div class="section-title">🌙 저녁 루틴</div>
+    <div class="item">
+      <input type="checkbox" data-key="diet">
+      <div>식단 조절</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="omad">
+      <div>1일 1식</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="dogcare">
+      <div>강아지 양치 / 위생</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="cleanup">
+      <div>불필요한 것 1개 삭제</div>
+    </div>
+  </div>
+
+  <!-- 📋 자기계발 -->
+  <div class="card">
+    <div class="section-title">📋 자기계발</div>
+    <div class="item">
+      <input type="checkbox" data-key="eng">
+      <div>영어 어플 15분</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="worksheet">
+      <div>학습지 1회</div>
+    </div>
+    <div class="item">
+      <input type="checkbox" data-key="friend">
+      <div>외국인 친구 행동 1개</div>
+    </div>
+  </div>
+
+  <!-- 📖 일기 -->
+  <div class="card">
+    <div class="section-title">📖 오늘 일기 (3줄)</div>
+    <textarea id="journal" placeholder="1) 오늘 한 일
+2) 느낀 점
+3) 내일의 한 가지"></textarea>
+  </div>
+
+  <!-- 📊 진행률 -->
+  <div class="card">
     <div class="progress"><div class="bar" id="bar"></div></div>
-
     <div class="kpi">
       <div class="box">오늘 진행률<div class="num" id="percent">0%</div></div>
       <div class="box">완료 항목<div class="num"><span id="done">0</span>/<span id="total">0</span></div></div>
     </div>
   </div>
+
+  <footer>
+    ✔ 데이터는 이 브라우저(LocalStorage)에만 저장됩니다.
+  </footer>
 </div>
 
 <script>
 const $$ = s => Array.from(document.querySelectorAll(s));
 const $ = s => document.querySelector(s);
-const KEY = "safe_dashboard_v1";
+const KEY = "final_focus_dashboard";
 
 function load(){ return JSON.parse(localStorage.getItem(KEY)||"{}"); }
 function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+const state = load();
 
 function update(){
   const boxes = $$("input[type=checkbox]");
@@ -56,8 +199,6 @@ function update(){
   $("#bar").style.width = pct + "%";
 }
 
-const state = load();
-
 $$("input[type=checkbox]").forEach(b=>{
   b.checked = !!state[b.dataset.key];
   b.addEventListener("change", ()=>{
@@ -67,28 +208,16 @@ $$("input[type=checkbox]").forEach(b=>{
   });
 });
 
+const journal = $("#journal");
+if(journal){
+  journal.value = state.journal || "";
+  journal.addEventListener("input", ()=>{
+    state.journal = journal.value;
+    save(state);
+  });
+}
+
 update();
 </script>
 </body>
 </html>
-<div class="item">
-  <div style="width:100%">
-    <b>📖 오늘 일기 (3줄)</b>
-    <textarea id="journal"
-      placeholder="1) 오늘 한 일
-2) 느낀 점
-3) 내일의 한 가지"
-      style="margin-top:6px"></textarea>
-  </div>
-</div>
-<script>
-// 일기 저장/불러오기
-const journalEl = document.getElementById("journal");
-if (journalEl) {
-  journalEl.value = state.journal || "";
-  journalEl.addEventListener("input", () => {
-    state.journal = journalEl.value;
-    save(state);
-  });
-}
-</script>
