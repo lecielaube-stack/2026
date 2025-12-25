@@ -483,7 +483,11 @@ function createDashboard(prefix, storageKey){
   const $$ = s => Array.from(document.querySelectorAll(s));
   const $  = s => document.querySelector(s);
 
-  const todayKey = () => new Date().toISOString().slice(0,10);
+  const todayKey = () => {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // 로컬(한국) 기준으로 맞춤
+  return d.toISOString().slice(0, 10);
+};
   const pad2 = n => String(n).padStart(2,"0");
   const ymd  = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
   const sameDay = (a,b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
