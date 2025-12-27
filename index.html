@@ -1264,6 +1264,9 @@ function createAccountBook(storageKey){
     renderMonthTotals();
   }
 
+  renderList();
+  renderMonthTotals();
+  renderAccountCalendar();
   function formatNum(n){
     try { return Number(n).toLocaleString("ko-KR"); }
     catch(e){ return String(n); }
