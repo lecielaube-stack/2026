@@ -675,6 +675,17 @@ function showBeauty(){
 
   window.scrollTo(0,0);
 }
+function showAccount(){
+  pageAccount.classList.add("active");
+  pageRoutine.classList.remove("active");
+  pageBeauty.classList.remove("active");
+
+  tabAccount.classList.add("active");
+  tabRoutine.classList.remove("active");
+  tabBeauty.classList.remove("active");
+
+  window.scrollTo(0,0);
+}
 tabRoutine.addEventListener("click", showRoutine);
 tabBeauty.addEventListener("click", showBeauty);
 tabAccount.addEventListener("click", showAccount);
