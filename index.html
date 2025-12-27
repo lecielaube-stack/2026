@@ -1326,6 +1326,18 @@ function createAccountBook(storageKey){
 
   // 버튼들
   btnGoToday.addEventListener("click", ()=> setActiveDate(todayKey()));
+  if(btnPrevM) btnPrevM.addEventListener("click", ()=>{
+  calMonth0--; if(calMonth0<0){ calMonth0=11; calYear--; }
+  renderAccountCalendar();
+});
+if(btnNextM) btnNextM.addEventListener("click", ()=>{
+  calMonth0++; if(calMonth0>11){ calMonth0=0; calYear++; }
+  renderAccountCalendar();
+});
+if(btnThisM) btnThisM.addEventListener("click", ()=>{
+  const n=new Date(); calYear=n.getFullYear(); calMonth0=n.getMonth();
+  renderAccountCalendar();
+});
 
   btnClearAll.addEventListener("click", ()=>{
     if(!confirm("가계부 전체 데이터를 초기화할까요?")) return;
