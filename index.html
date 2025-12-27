@@ -534,7 +534,75 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
   </div>
 </div>
+<!-- ========================= 가계부 ========================= -->
+<div id="pageAccount" class="page">
+  <div class="wrap">
 
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <h1>가계부 대시보드</h1>
+          <div class="sub">수입/지출을 날짜별로 기록 · (저장은 다음 단계에서 연결)</div>
+          <div class="small">현재 편집 날짜: <span id="a_dateLabel"></span></div>
+        </div>
+        <div class="btnrow">
+          <button class="btn" id="a_btnGoToday" type="button">오늘로</button>
+          <button class="btn danger" id="a_btnClearAll" type="button">전체 초기화</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">➕ 수입/지출 추가</div>
+
+      <div class="row" style="gap:8px">
+        <select id="a_type" class="btn" style="padding:10px 12px">
+          <option value="expense">지출</option>
+          <option value="income">수입</option>
+        </select>
+
+        <input id="a_amount" class="btn" type="number" placeholder="금액" style="flex:1; padding:10px 12px" />
+        <input id="a_memo" class="btn" type="text" placeholder="메모(예: 커피, 월급)" style="flex:2; padding:10px 12px" />
+
+        <button class="btn" id="a_btnAdd" type="button">추가</button>
+      </div>
+
+      <div class="small" style="margin-top:10px;color:var(--muted)">
+        * 지금은 화면만 추가된 상태야. 저장/월별 정산은 다음 단계에서 연결할게.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">📒 오늘(선택 날짜) 내역</div>
+      <div id="a_list" class="listCard">
+        <div class="small">아직 내역이 없어요.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">📊 월별 합계(미연결)</div>
+      <div class="grid2">
+        <div class="statbox">
+          <div class="statlabel">이번 달 수입</div>
+          <div class="statnum" id="a_monthIncome">0</div>
+        </div>
+        <div class="statbox">
+          <div class="statlabel">이번 달 지출</div>
+          <div class="statnum" id="a_monthExpense">0</div>
+        </div>
+      </div>
+      <div class="statdesc" style="margin-top:10px">
+        (월별 정산/저장 로직 붙이면 자동 계산되게 만들 거야)
+      </div>
+    </div>
+
+    <footer>
+      ✔ 가계부도 루틴/뷰티처럼 브라우저(LocalStorage)에 저장되게 만들 수 있어.<br/>
+      ✔ 다음 단계에서 “저장 + 월별 정산 + 백업(JSON)”까지 붙여줄게.
+    </footer>
+  </div>
+</div>
+<!-- ========================= /가계부 끝 ========================= -->
 <div id="errbox" class="errbox"></div>
 
 <script>
