@@ -1186,6 +1186,69 @@ function createAccountBook(storageKey){
   const listBox = document.getElementById("a_list");
   const monthIncomeEl = document.getElementById("a_monthIncome");
   const monthExpenseEl = document.getElementById("a_monthExpense");
+    // ✅ 가계부 달력용 요소
+  const calGrid  = document.getElementById("a_calGrid");
+  const calLabel = document.getElementById("a_calLabel");
+  const btnPrevM = document.getElementById("a_btnPrevMonth");
+  const btnNextM = document.getElementById("a_btnNextMonth");
+  const btnThisM = document.getElementById("a_btnThisMonth");
+
+  // 현재 달 상태
+  let calYear = new Date().getFullYear();
+  let calMonth0 = new Date().getMonth();
+
+  function sumDay(ds){
+    const arr = state.entriesByDate[ds] || [];
+    let expense = 0, income = 0;
+    arr.forEach(it=>{
+      const amt = Number(it.amount) || 0;
+      if(it.type === "income") income += amt;
+      else expense += amt;
+    });
+    return {income, expense};
+  }
+
+  function renderAccountCalendar(){
+    if(!calGrid || !calLabel) return;
+
+    const pad2 = n => String(n).padStart(2,"0");
+    calLabel.textContent = `월간 달력 · ${calYear}-${pad2(calMonth0+1)}`;
+
+    const first = new Date(calYear, calMonth0, 1);
+    const last  = new Date(calYear, calMonth0+1, 0);
+    const startDow = first.getDay(); // 0 Sun
+    const dows = ["일","월","화","수","목","금","토"];
+
+    const cells = [];
+    for(const d of dows){ cells.push(`<div class="dow">${d}</div>`); }
+    for(let i=0;i<startDow;i++){
+      cells.push(`<div style="min-height:56px;opacity:.25;border:1px solid rgba(255,255,255,.06);border-radius:12px"></div>`);
+    }
+
+    for(let day=1; day<=last.getDate(); day++){
+      const ds = `${calYear}-${pad2(calMonth0+1)}-${pad2(day)}`;
+      const s = sumDay(ds);
+
+      // ✅ “지출이 있으면 지출만 크게 표시” (원하면 수입도 같이 표시로 바꿀 수 있어)
+      const show = s.expense > 0 ? `-${formatNum(s.expense)}` : (s.income > 0 ? `+${formatNum(s.income)}` : "");
+
+      cells.push(`
+        <button type="button" class="cell" data-date="${ds}">
+          <div class="d">${day}일</div>
+          <div class="p">${show}</div>
+        </button>
+      `);
+    }
+
+    calGrid.innerHTML = cells.join("");
+
+    calGrid.querySelectorAll("button[data-date]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        setActiveDate(btn.getAttribute("data-date"));
+        window.scrollTo(0,0);
+      });
+    });
+  }
 
   // 안전장치: HTML id가 하나라도 없으면 중단
   if(!dateLabel || !btnGoToday || !btnClearAll || !selType || !inpAmount || !inpMemo || !btnAdd || !listBox || !monthIncomeEl || !monthExpenseEl){
