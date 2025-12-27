@@ -1028,10 +1028,16 @@ function createDashboard(prefix, storageKey){
   updateProgress();
 }
 
+/* ✅ v5 → v6로 데이터 복사 (v6가 비어있을 때만 1회) */
+function migrateKey(oldKey, newKey){
+  if (!localStorage.getItem(newKey) && localStorage.getItem(oldKey)) {
+    localStorage.setItem(newKey, localStorage.getItem(oldKey));
+  }
+}
+migrateKey("focus_dashboard_routine_v5", "focus_dashboard_routine_v6");
+migrateKey("focus_dashboard_beauty_v5", "focus_dashboard_beauty_v6");
+
 /* ===== 두 대시보드 생성 (저장소 분리) ===== */
 createDashboard("r", "focus_dashboard_routine_v6");
 createDashboard("b", "focus_dashboard_beauty_v6");
 </script>
-
-</body>
-</html>
