@@ -169,11 +169,12 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="topbar">
         <div>
           <h1>나의 선택과 집중 대시보드</h1>
-          <div class="sub">체크/일기/인생계획은 자동 저장(날짜별) · 진행률 즉시 반영</div>
-          <div class="small">오늘 날짜: <span id="r_dateLabel"></span></div>
+          <div class="sub">체크/일기/인생계획은 자동 저장(날짜별) · 달력에서 날짜 선택 후 “이 날짜 편집” 가능</div>
+          <div class="small">현재 편집 날짜: <span id="r_dateLabel"></span></div>
         </div>
         <div class="btnrow">
-          <button class="btn" id="r_btnTodayReset" type="button">오늘만 리셋</button>
+          <button class="btn" id="r_btnGoToday" type="button">오늘로</button>
+          <button class="btn" id="r_btnTodayReset" type="button">이 날짜만 리셋</button>
           <button class="btn danger" id="r_btnClearAll" type="button">전체 초기화</button>
         </div>
       </div>
@@ -188,7 +189,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="strength"><div><b>근력운동 20분</b></div></div>
       <div class="item"><input type="checkbox" data-key="dogwalk"><div><b>강아지 산책</b></div></div>
 
-      <!-- ✅ 추가: 아침 물 500ml -->
+      <!-- 추가 -->
       <div class="item">
         <input type="checkbox" data-key="water500_am">
         <div>
@@ -203,12 +204,14 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
 
       <div class="item"><input type="checkbox" data-key="mind_noscroll"><div><b>시간 낭비하지 않기</b><div class="desc">무의식 스크롤 · 의미 없는 소비 차단</div></div></div>
       <div class="item"><input type="checkbox" data-key="mind_clean"><div><b>청소하기</b><div class="desc">공간 정리 · 에너지 정리</div></div></div>
+
       <div class="item"><input type="checkbox" data-key="diet"><div><b>식단 조절</b><div class="desc">적색육/소금물/버터 섭취 의식</div></div></div>
       <div class="item"><input type="checkbox" data-key="save"><div><b>절약: 돈 안 쓰기</b></div></div>
       <div class="item"><input type="checkbox" data-key="simplify"><div><b>생활 단순화: 불필요 1개 삭제</b></div></div>
+
       <div class="item"><input type="checkbox" data-key="sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시 ~ 6시 목표</div></div></div>
 
-      <!-- ✅ 추가: 가계부 -->
+      <!-- 추가 -->
       <div class="item">
         <input type="checkbox" data-key="accountbook">
         <div>
@@ -221,7 +224,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="lifeplan10"><div><b>인생 계획 10분</b></div></div>
       <div class="item"><input type="checkbox" data-key="esteem"><div><b>자존감 채우기</b><div class="desc">오늘 잘한 것 1개 적기</div></div></div>
 
-      <!-- ✅ 추가: 자기 전 식초물 -->
+      <!-- 추가 -->
       <div class="item">
         <input type="checkbox" data-key="vinegar_before_bed">
         <div>
@@ -237,7 +240,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
 
     <div class="card" id="r_diaryCard">
-      <div class="section-title">📖 오늘 일기 (날짜별 저장)</div>
+      <div class="section-title">📖 일기 (현재 편집 날짜로 저장)</div>
       <textarea id="r_journal" placeholder="1) 오늘 한 일&#10;2) 느낀 점&#10;3) 내일의 한 가지"></textarea>
 
       <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
@@ -248,7 +251,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
 
     <div class="card" id="r_lifePlanCard">
-      <div class="section-title">🧭 인생 계획 기록 (날짜별 저장)</div>
+      <div class="section-title">🧭 인생 계획 기록 (현재 편집 날짜로 저장)</div>
       <textarea id="r_lifePlan" placeholder="장기 목표 / 이번 달 목표 / 방향 정리"></textarea>
 
       <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
@@ -261,7 +264,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     <div class="card">
       <div class="progress"><div class="bar" id="r_bar"></div></div>
       <div class="kpi">
-        <div class="box">오늘 진행률<div class="num" id="r_percent">0%</div></div>
+        <div class="box">현재 날짜 진행률<div class="num" id="r_percent">0%</div></div>
         <div class="box">완료 항목<div class="num"><span id="r_done">0</span>/<span id="r_total">0</span></div></div>
       </div>
     </div>
@@ -297,13 +300,14 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div id="r_weekBars" class="weekbars"></div>
 
       <div style="height:14px"></div>
-      <div class="statlabel">월간 달력 (날짜 눌러서 기록 보기)</div>
+      <div class="statlabel">월간 달력 (날짜 눌러서 기록 보기 → “이 날짜 편집” 가능)</div>
       <div id="r_calGrid" class="calendar"></div>
     </div>
 
     <footer>
       ✔ 데이터는 <b>이 브라우저(LocalStorage)</b>에만 저장됩니다.<br/>
-      ✔ 폰 바꾸거나 브라우저 데이터 삭제하면 사라질 수 있어요 → “백업(JSON)” 추천.
+      ✔ “방문 기록 및 웹 사이트 데이터 지우기”를 하면 데이터가 사라집니다.<br/>
+      ✔ 그래서 “백업(JSON)”을 가끔 받아두는 걸 추천해요.
     </footer>
   </div>
 
@@ -314,7 +318,10 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
           <div class="statlabel">기록 보기</div>
           <div class="statnum" id="r_dayModalTitle" style="font-size:18px">YYYY-MM-DD</div>
         </div>
-        <button class="btn" id="r_btnCloseDayModal" type="button">닫기</button>
+        <div class="btnrow">
+          <button class="btn" id="r_btnEditThisDay" type="button">이 날짜 편집</button>
+          <button class="btn" id="r_btnCloseDayModal" type="button">닫기</button>
+        </div>
       </div>
 
       <div style="height:10px"></div>
@@ -348,11 +355,12 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="topbar">
         <div>
           <h1>외모 가꾸기 집중 대시보드</h1>
-          <div class="sub">체크/메모 자동 저장(날짜별) · 진행률/주·월 통계 자동</div>
-          <div class="small">오늘 날짜: <span id="b_dateLabel"></span></div>
+          <div class="sub">체크/메모 자동 저장(날짜별) · 달력에서 날짜 선택 후 “이 날짜 편집” 가능</div>
+          <div class="small">현재 편집 날짜: <span id="b_dateLabel"></span></div>
         </div>
         <div class="btnrow">
-          <button class="btn" id="b_btnTodayReset" type="button">오늘만 리셋</button>
+          <button class="btn" id="b_btnGoToday" type="button">오늘로</button>
+          <button class="btn" id="b_btnTodayReset" type="button">이 날짜만 리셋</button>
           <button class="btn danger" id="b_btnClearAll" type="button">전체 초기화</button>
         </div>
       </div>
@@ -405,7 +413,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </div>
 
     <div class="card" id="b_memoCard">
-      <div class="section-title">📝 오늘 몸상태 메모 (날짜별 저장)</div>
+      <div class="section-title">📝 몸상태 메모 (현재 편집 날짜로 저장)</div>
       <textarea id="b_journal" placeholder="예) 컨디션/수면/피부상태/붓기/근육통/기분/식단 만족도 등"></textarea>
 
       <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
@@ -418,7 +426,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     <div class="card">
       <div class="progress"><div class="bar" id="b_bar"></div></div>
       <div class="kpi">
-        <div class="box">오늘 진행률<div class="num" id="b_percent">0%</div></div>
+        <div class="box">현재 날짜 진행률<div class="num" id="b_percent">0%</div></div>
         <div class="box">완료 항목<div class="num"><span id="b_done">0</span>/<span id="b_total">0</span></div></div>
       </div>
     </div>
@@ -454,13 +462,13 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div id="b_weekBars" class="weekbars"></div>
 
       <div style="height:14px"></div>
-      <div class="statlabel">월간 달력 (날짜 눌러서 기록 보기)</div>
+      <div class="statlabel">월간 달력 (날짜 눌러서 기록 보기 → “이 날짜 편집” 가능)</div>
       <div id="b_calGrid" class="calendar"></div>
     </div>
 
     <footer>
       ✔ 뷰티 체크/메모 데이터는 <b>이 브라우저(LocalStorage)</b>에만 저장됩니다.<br/>
-      ✔ 폰 바꾸거나 브라우저 데이터 삭제하면 사라질 수 있어요 → “백업(JSON)” 추천.
+      ✔ “방문 기록 및 웹 사이트 데이터 지우기”를 하면 데이터가 사라집니다 → “백업(JSON)” 추천.
     </footer>
   </div>
 
@@ -471,7 +479,10 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
           <div class="statlabel">기록 보기</div>
           <div class="statnum" id="b_dayModalTitle" style="font-size:18px">YYYY-MM-DD</div>
         </div>
-        <button class="btn" id="b_btnCloseDayModal" type="button">닫기</button>
+        <div class="btnrow">
+          <button class="btn" id="b_btnEditThisDay" type="button">이 날짜 편집</button>
+          <button class="btn" id="b_btnCloseDayModal" type="button">닫기</button>
+        </div>
       </div>
 
       <div style="height:10px"></div>
@@ -521,7 +532,7 @@ tabBeauty.addEventListener("click", showBeauty);
 function createDashboard(prefix, storageKey){
   const todayKey = () => {
     const d = new Date();
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // 로컬 기준
     return d.toISOString().slice(0, 10);
   };
 
@@ -539,13 +550,7 @@ function createDashboard(prefix, storageKey){
   const state = load();
   if(!state.daily) state.daily = {};
   if(!state.journals) state.journals = {};
-  if(!state.lifePlans) state.lifePlans = {}; // 루틴 전용
-
-  const T = todayKey();
-  if(!state.daily[T]) state.daily[T] = {};
-
-  const dateLabel = document.getElementById(prefix+"_dateLabel");
-  if(dateLabel) dateLabel.textContent = T;
+  if(!state.lifePlans) state.lifePlans = {}; // 루틴 전용(있어도 뷰티는 무시)
 
   function pageRoot(){
     return document.getElementById(prefix==="r" ? "pageRoutine" : "pageBeauty");
@@ -554,6 +559,12 @@ function createDashboard(prefix, storageKey){
     return Array.from(pageRoot().querySelectorAll('input[type=checkbox][data-key]'));
   }
   function keysList(){ return boxes().map(b => b.dataset.key); }
+
+  // ✅ 현재 편집 중인 날짜
+  let activeDate = todayKey();
+  if(!state.daily[activeDate]) state.daily[activeDate] = {};
+
+  const dateLabel = document.getElementById(prefix+"_dateLabel");
 
   function updateTodayProgress(){
     const b = boxes();
@@ -572,38 +583,59 @@ function createDashboard(prefix, storageKey){
     if(barEl)  barEl.style.width  = pct + "%";
   }
 
+  const journal = document.getElementById(prefix+"_journal");
+  const lifePlan = document.getElementById(prefix+"_lifePlan");
+
+  function setActiveDate(dateStr){
+    activeDate = dateStr;
+    if(!state.daily[activeDate]) state.daily[activeDate] = {};
+
+    if(dateLabel) dateLabel.textContent = activeDate;
+
+    // 체크박스 로드
+    boxes().forEach(b=>{
+      const k = b.dataset.key;
+      b.checked = !!(state.daily[activeDate] && state.daily[activeDate][k]);
+    });
+
+    // 텍스트 로드
+    if(journal) journal.value = state.journals[activeDate] || "";
+    if(lifePlan) lifePlan.value = state.lifePlans[activeDate] || "";
+
+    updateTodayProgress();
+  }
+
+  // 초기 로드
+  setActiveDate(activeDate);
+
   // 체크박스 바인딩
   boxes().forEach(b=>{
     const k = b.dataset.key;
-    b.checked = !!state.daily[T][k];
     b.addEventListener("change", ()=>{
-      state.daily[T][k] = b.checked;
+      state.daily[activeDate][k] = b.checked;
       save(state);
       updateTodayProgress();
       renderAnalytics();
     });
   });
 
-  // 일기/메모
-  const journal = document.getElementById(prefix+"_journal");
+  // 일기/메모 저장
   if(journal){
-    journal.value = state.journals[T] || "";
     journal.addEventListener("input", ()=>{
-      state.journals[T] = journal.value;
+      state.journals[activeDate] = journal.value;
       save(state);
     });
   }
 
-  // 인생 계획(루틴만)
-  const lifePlan = document.getElementById(prefix+"_lifePlan");
+  // 인생 계획 저장(루틴만)
   if(lifePlan){
-    lifePlan.value = state.lifePlans[T] || "";
     lifePlan.addEventListener("input", ()=>{
-      state.lifePlans[T] = lifePlan.value;
+      state.lifePlans[activeDate] = lifePlan.value;
       save(state);
     });
   }
 
+  // 목록 렌더
   function renderTextList(targetId, mapObj, kindLabel){
     const box = document.getElementById(targetId);
     if(!box) return;
@@ -639,6 +671,7 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // 리스트 버튼
   const btnDiaryList = document.getElementById(prefix+"_btnDiaryList");
   if(btnDiaryList){
     btnDiaryList.addEventListener("click", ()=>{
@@ -649,10 +682,15 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // 백업(JSON)
   const btnDiaryExport = document.getElementById(prefix+"_btnDiaryExport");
   if(btnDiaryExport){
     btnDiaryExport.addEventListener("click", ()=>{
-      const data = { journals: state.journals || {}, daily: state.daily || {}, lifePlans: state.lifePlans || {} };
+      const data = {
+        journals: state.journals || {},
+        daily: state.daily || {},
+        lifePlans: state.lifePlans || {}
+      };
       const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -662,6 +700,7 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // 인생 계획 리스트/백업(루틴만)
   const btnLPList = document.getElementById(prefix+"_btnLifePlanList");
   if(btnLPList){
     btnLPList.addEventListener("click", ()=>{
@@ -684,23 +723,33 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // 오늘로
+  const btnGoToday = document.getElementById(prefix+"_btnGoToday");
+  if(btnGoToday){
+    btnGoToday.addEventListener("click", ()=>{
+      setActiveDate(todayKey());
+      renderAnalytics();
+      window.scrollTo(0,0);
+    });
+  }
+
+  // 현재 날짜(=activeDate)만 리셋
   const btnTodayReset = document.getElementById(prefix+"_btnTodayReset");
   if(btnTodayReset){
     btnTodayReset.addEventListener("click", ()=>{
-      if(!confirm("오늘 체크와 오늘 기록만 리셋할까요?")) return;
-      state.daily[T] = {};
-      state.journals[T] = "";
-      if(state.lifePlans) state.lifePlans[T] = "";
+      if(!confirm("현재 편집 중인 날짜의 체크/기록만 리셋할까요?")) return;
+
+      state.daily[activeDate] = {};
+      state.journals[activeDate] = "";
+      if(state.lifePlans) state.lifePlans[activeDate] = "";
       save(state);
 
-      boxes().forEach(b=> b.checked = false);
-      if(journal) journal.value = "";
-      if(lifePlan) lifePlan.value = "";
-      updateTodayProgress();
+      setActiveDate(activeDate);
       renderAnalytics();
     });
   }
 
+  // 전체 초기화
   const btnClearAll = document.getElementById(prefix+"_btnClearAll");
   if(btnClearAll){
     btnClearAll.addEventListener("click", ()=>{
@@ -721,7 +770,7 @@ function createDashboard(prefix, storageKey){
   }
 
   function startOfWeekMonday(d){
-    const day = d.getDay();
+    const day = d.getDay(); // 0 일 ~ 6 토
     const diff = (day === 0) ? -6 : (1 - day);
     const s = new Date(d);
     s.setDate(s.getDate() + diff);
@@ -790,7 +839,7 @@ function createDashboard(prefix, storageKey){
 
     const first = new Date(calYear, calMonth0, 1);
     const last  = new Date(calYear, calMonth0+1, 0);
-    const startDow = first.getDay();
+    const startDow = first.getDay(); // 0 Sun
     const dows = ["일","월","화","수","목","금","토"];
 
     const cells = [];
@@ -822,7 +871,12 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // ===== 모달 =====
+  let lastModalDate = null;
+
   function openDayModal(dateStr){
+    lastModalDate = dateStr;
+
     const back = document.getElementById(prefix+"_dayModalBackdrop");
     const title = document.getElementById(prefix+"_dayModalTitle");
     const pctEl = document.getElementById(prefix+"_dayModalPct");
@@ -844,6 +898,16 @@ function createDashboard(prefix, storageKey){
       lifePlanModal.textContent = (state.lifePlans && state.lifePlans[dateStr]) ? state.lifePlans[dateStr] : "(기록 없음)";
     }
 
+    // ✅ “이 날짜 편집”
+    const editBtn = document.getElementById(prefix+"_btnEditThisDay");
+    if(editBtn){
+      editBtn.onclick = ()=>{
+        setActiveDate(dateStr);
+        closeDayModal();
+        window.scrollTo(0,0);
+      };
+    }
+
     back.style.display = "flex";
   }
 
@@ -862,6 +926,7 @@ function createDashboard(prefix, storageKey){
     });
   }
 
+  // 달력 월 이동
   const btnPrev = document.getElementById(prefix+"_btnPrevMonth");
   const btnNext = document.getElementById(prefix+"_btnNextMonth");
   const btnThis = document.getElementById(prefix+"_btnThisMonth");
@@ -896,11 +961,10 @@ function createDashboard(prefix, storageKey){
     renderCalendar();
   }
 
-  updateTodayProgress();
   renderAnalytics();
 }
 
-/* ===== 두 대시보드 생성 (저장소 분리) ===== */
+/* ===== 두 대시보드 생성 (저장소 분리 / 기존 v5 키 유지) ===== */
 createDashboard("r", "focus_dashboard_routine_v5");
 createDashboard("b", "focus_dashboard_beauty_v5");
 </script>
