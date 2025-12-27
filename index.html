@@ -1382,7 +1382,53 @@ if(btnThisM) btnThisM.addEventListener("click", ()=>{
 
   // 초기 표시
   setActiveDate(activeDate);
-  setActiveDate(activeDate);
+  
+  /* ===== 백업 ===== */
+const btnExport = document.getElementById("a_btnExport");
+if(btnExport){
+  btnExport.addEventListener("click", ()=>{
+    const blob = new Blob(
+      [JSON.stringify(state, null, 2)],
+      { type: "application/json" }
+    );
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "accountbook-backup.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+}
+
+/* ===== 복원 ===== */
+const btnImport = document.getElementById("a_btnImport");
+const fileInput = document.getElementById("a_fileInput");
+
+if(btnImport && fileInput){
+  btnImport.addEventListener("click", ()=> fileInput.click());
+
+  fileInput.addEventListener("change", ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+
+    if(!confirm("가계부 데이터를 이 파일로 복원할까요? 기존 데이터는 사라져요.")){
+      fileInput.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{
+        const data = JSON.parse(reader.result);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        alert("복원 완료! 페이지를 새로고침할게요.");
+        location.reload();
+      }catch(e){
+        alert("올바른 백업 파일이 아니에요.");
+      }
+    };
+    reader.readAsText(file);
+  });
+}
 renderAccountCalendar();
 }
 /* ================== (여기까지) 가계부 로직 ================== */
