@@ -598,6 +598,17 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
 
     <div class="card">
       <div class="section-title">📊 월별 합계(미연결)</div>
+      <div class="card">
+  <div class="section-title">💾 백업 / 복원</div>
+  <div class="btnrow">
+    <button class="btn" id="a_btnExport" type="button">⬇️ 백업(JSON)</button>
+    <button class="btn" id="a_btnImport" type="button">⬆️ 복원(JSON)</button>
+    <input type="file" id="a_fileInput" accept="application/json" style="display:none" />
+  </div>
+  <div class="small" style="margin-top:8px">
+    ⚠️ 복원하면 기존 가계부 데이터는 덮어써져요.
+  </div>
+</div>
       <div class="grid2">
         <div class="statbox">
           <div class="statlabel">이번 달 수입</div>
