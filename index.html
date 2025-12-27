@@ -1134,6 +1134,151 @@ migrateKey("focus_dashboard_routine_v5", "focus_dashboard_routine_v6");
 migrateKey("focus_dashboard_beauty_v5", "focus_dashboard_beauty_v6");
 
 /* ===== 두 대시보드 생성 (저장소 분리) ===== */
+<script>
+/* ================== (여기부터) 가계부 로직 ================== */
+function createAccountBook(storageKey){
+  const todayKey = () => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 10);
+  };
+  const pad2 = n => String(n).padStart(2,"0");
+  const ymd  = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(storageKey) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(v){ localStorage.setItem(storageKey, JSON.stringify(v)); }
+
+  const state = load();
+  if(!state.entriesByDate) state.entriesByDate = {}; // { "YYYY-MM-DD": [ {type, amount, memo, ts}, ... ] }
+
+  let activeDate = todayKey();
+  if(!state.entriesByDate[activeDate]) state.entriesByDate[activeDate] = [];
+
+  // 엘리먼트
+  const dateLabel = document.getElementById("a_dateLabel");
+  const btnGoToday = document.getElementById("a_btnGoToday");
+  const btnClearAll = document.getElementById("a_btnClearAll");
+
+  const selType = document.getElementById("a_type");
+  const inpAmount = document.getElementById("a_amount");
+  const inpMemo = document.getElementById("a_memo");
+  const btnAdd = document.getElementById("a_btnAdd");
+
+  const listBox = document.getElementById("a_list");
+  const monthIncomeEl = document.getElementById("a_monthIncome");
+  const monthExpenseEl = document.getElementById("a_monthExpense");
+
+  // 안전장치: HTML id가 하나라도 없으면 중단
+  if(!dateLabel || !btnGoToday || !btnClearAll || !selType || !inpAmount || !inpMemo || !btnAdd || !listBox || !monthIncomeEl || !monthExpenseEl){
+    console.warn("AccountBook: 필요한 id가 누락됨");
+    return;
+  }
+
+  function setActiveDate(ds){
+    activeDate = ds;
+    if(!state.entriesByDate[activeDate]) state.entriesByDate[activeDate] = [];
+    dateLabel.textContent = activeDate;
+    renderList();
+    renderMonthTotals();
+  }
+
+  function formatNum(n){
+    try { return Number(n).toLocaleString("ko-KR"); }
+    catch(e){ return String(n); }
+  }
+
+  function renderList(){
+    const arr = state.entriesByDate[activeDate] || [];
+    if(arr.length === 0){
+      listBox.innerHTML = `<div class="small">아직 내역이 없어요.</div>`;
+      return;
+    }
+
+    listBox.innerHTML = arr.map((it, idx) => {
+      const sign = it.type === "income" ? "+" : "-";
+      const label = it.type === "income" ? "수입" : "지출";
+      const memo = (it.memo || "").replace(/</g,"&lt;");
+      return `
+        <div class="listCard" style="margin-top:8px">
+          <div class="topbar" style="padding:0;margin:0;border:0">
+            <b>${label} ${sign}${formatNum(it.amount)}원</b>
+            <button class="btn danger" type="button" data-del="${idx}">삭제</button>
+          </div>
+          <div class="small" style="margin-top:8px">${memo || "(메모 없음)"}</div>
+        </div>
+      `;
+    }).join("");
+
+    listBox.querySelectorAll("button[data-del]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const idx = Number(btn.getAttribute("data-del"));
+        if(!confirm("이 내역을 삭제할까요?")) return;
+        state.entriesByDate[activeDate].splice(idx, 1);
+        save(state);
+        renderList();
+        renderMonthTotals();
+      });
+    });
+  }
+
+  function monthKey(ds){ return ds.slice(0,7); } // YYYY-MM
+  function renderMonthTotals(){
+    const mkey = monthKey(activeDate);
+    let income = 0, expense = 0;
+
+    Object.entries(state.entriesByDate).forEach(([ds, arr])=>{
+      if(monthKey(ds) !== mkey) return;
+      (arr || []).forEach(it=>{
+        const amt = Number(it.amount) || 0;
+        if(it.type === "income") income += amt;
+        else expense += amt;
+      });
+    });
+
+    monthIncomeEl.textContent = formatNum(income);
+    monthExpenseEl.textContent = formatNum(expense);
+  }
+
+  // 버튼들
+  btnGoToday.addEventListener("click", ()=> setActiveDate(todayKey()));
+
+  btnClearAll.addEventListener("click", ()=>{
+    if(!confirm("가계부 전체 데이터를 초기화할까요?")) return;
+    localStorage.removeItem(storageKey);
+    location.reload();
+  });
+
+  btnAdd.addEventListener("click", ()=>{
+    const type = selType.value; // income | expense
+    const amount = Number(inpAmount.value);
+    const memo = (inpMemo.value || "").trim();
+
+    if(!amount || amount <= 0){
+      alert("금액을 1원 이상으로 입력해줘!");
+      inpAmount.focus();
+      return;
+    }
+
+    const item = { type, amount: Math.round(amount), memo, ts: Date.now() };
+    state.entriesByDate[activeDate].push(item);
+    save(state);
+
+    // 입력칸 정리
+    inpAmount.value = "";
+    inpMemo.value = "";
+
+    renderList();
+    renderMonthTotals();
+  });
+
+  // 초기 표시
+  setActiveDate(activeDate);
+}
+/* ================== (여기까지) 가계부 로직 ================== */
+</script>
 createDashboard("r", "focus_dashboard_routine_v6");
 createDashboard("b", "focus_dashboard_beauty_v6");
 </script>
