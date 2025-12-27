@@ -571,7 +571,24 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
         * 지금은 화면만 추가된 상태야. 저장/월별 정산은 다음 단계에서 연결할게.
       </div>
     </div>
+<div class="card">
+  <div class="row" style="justify-content:space-between; align-items:center">
+    <div>
+      <div class="section-title" style="margin:0">📅 월간 지출 캘린더</div>
+      <div class="small callabel" id="a_calLabel"></div>
+      <div class="small" style="margin-top:6px;color:var(--muted)">
+        날짜를 누르면 그날 내역이 아래에 보여요.
+      </div>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="a_btnPrevMonth" type="button">◀︎</button>
+      <button class="btn" id="a_btnThisMonth" type="button">이번 달</button>
+      <button class="btn" id="a_btnNextMonth" type="button">▶︎</button>
+    </div>
+  </div>
 
+  <div id="a_calGrid" class="calendar"></div>
+</div>
     <div class="card">
       <div class="section-title">📒 오늘(선택 날짜) 내역</div>
       <div id="a_list" class="listCard">
