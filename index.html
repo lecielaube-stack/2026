@@ -602,38 +602,7 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
     </footer>
   </div>
 </div>
-<!-- ========================= 가계부 ========================= -->
-<div id="pageAccount" class="page">
-  <div class="wrap">
 
-    <div class="card">
-      <div class="topbar">
-        <div>
-          <h1>가계부 대시보드</h1>
-          <div class="sub">날짜별로 간단히 메모해두는 가계부</div>
-          <div class="small">현재 편집 날짜: <span id="a_dateLabel"></span></div>
-        </div>
-        <div class="btnrow">
-          <button class="btn" id="a_btnGoToday" type="button">오늘로</button>
-          <button class="btn" id="a_btnTodayReset" type="button">이 날짜만 리셋</button>
-          <button class="btn danger" id="a_btnClearAll" type="button">전체 초기화</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">🧾 오늘 입출 내역 메모 (현재 편집 날짜로 저장)</div>
-      <textarea id="a_journal" placeholder="예)&#10;- 수입: 100,000 (월급)&#10;- 지출: 9,000 (점심)&#10;- 지출: 4,500 (커피)"></textarea>
-
-      <div class="btnrow" style="margin-top:10px;justify-content:flex-end">
-        <button class="btn" id="a_btnDiaryList" type="button">📚 기록 보기</button>
-        <button class="btn" id="a_btnDiaryExport" type="button">⬇️ 백업(JSON)</button>
-      </div>
-      <div id="a_diaryList" style="display:none;"></div>
-    </div>
-
-  </div>
-</div>
 <!-- ========================= /가계부 끝 ========================= -->
 <div id="errbox" class="errbox"></div>
 
