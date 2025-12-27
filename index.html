@@ -624,15 +624,23 @@ const pageAccount = document.getElementById("pageAccount");
 function showRoutine(){
   pageRoutine.classList.add("active");
   pageBeauty.classList.remove("active");
+  pageAccount.classList.remove("active");   // ✅ 이 줄 추가
+
   tabRoutine.classList.add("active");
   tabBeauty.classList.remove("active");
+  tabAccount.classList.remove("active");    // ✅ 이 줄 추가
+
   window.scrollTo(0,0);
 }
 function showBeauty(){
   pageBeauty.classList.add("active");
   pageRoutine.classList.remove("active");
+  pageAccount.classList.remove("active");   // ✅ 추가
+
   tabBeauty.classList.add("active");
   tabRoutine.classList.remove("active");
+  tabAccount.classList.remove("active");    // ✅ 추가
+
   window.scrollTo(0,0);
 }
 tabRoutine.addEventListener("click", showRoutine);
