@@ -1134,8 +1134,7 @@ migrateKey("focus_dashboard_routine_v5", "focus_dashboard_routine_v6");
 migrateKey("focus_dashboard_beauty_v5", "focus_dashboard_beauty_v6");
 
 /* ===== 두 대시보드 생성 (저장소 분리) ===== */
-<script>
-/* ================== (여기부터) 가계부 로직 ================== */
+
 function createAccountBook(storageKey){
   const todayKey = () => {
     const d = new Date();
