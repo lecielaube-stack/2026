@@ -1326,6 +1326,7 @@ function createAccountBook(storageKey){
 
   // 버튼들
   btnGoToday.addEventListener("click", ()=> setActiveDate(todayKey()));
+  
   if(btnPrevM) btnPrevM.addEventListener("click", ()=>{
   calMonth0--; if(calMonth0<0){ calMonth0=11; calYear--; }
   renderAccountCalendar();
