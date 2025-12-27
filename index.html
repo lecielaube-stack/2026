@@ -568,7 +568,9 @@ function createDashboard(prefix, storageKey){
   const state = load();
   if(!state.daily) state.daily = {};
   if(!state.journals) state.journals = {};
-  if(!state.lifePlans) state.lifePlans = {}; // 루틴 전용(있어도 뷰티는 무시)
+  if(!state.lifePlans) state.lifePlans = {};
+  if(!state.positiveMemos) state.positiveMemos = {};
+  if(!state.esteemMemos) state.esteemMemos = {};// 루틴 전용(있어도 뷰티는 무시)
 
   function pageRoot(){
     return document.getElementById(prefix==="r" ? "pageRoutine" : "pageBeauty");
@@ -602,6 +604,25 @@ function createDashboard(prefix, storageKey){
   }
 
   const journal = document.getElementById(prefix+"_journal");
+  // 긍정적 생각 메모
+const positiveMemo = document.getElementById("r_positiveMemo");
+if(positiveMemo){
+  positiveMemo.value = state.positiveMemos[T] || "";
+  positiveMemo.addEventListener("input", ()=>{
+    state.positiveMemos[T] = positiveMemo.value;
+    save(state);
+  });
+}
+
+// 자존감 메모
+const esteemMemo = document.getElementById("r_esteemMemo");
+if(esteemMemo){
+  esteemMemo.value = state.esteemMemos[T] || "";
+  esteemMemo.addEventListener("input", ()=>{
+    state.esteemMemos[T] = esteemMemo.value;
+    save(state);
+  });
+}
   const lifePlan = document.getElementById(prefix+"_lifePlan");
 
   function setActiveDate(dateStr){
@@ -912,6 +933,15 @@ function createDashboard(prefix, storageKey){
     journalEl.textContent = (state.journals && state.journals[dateStr]) ? state.journals[dateStr] : "(기록 없음)";
 
     const lifePlanModal = document.getElementById(prefix+"_dayModalLifePlan");
+    const pos = state.positiveMemos?.[dateStr];
+const est = state.esteemMemos?.[dateStr];
+
+if(pos){
+  journalEl.textContent += "\n\n🌱 긍정적 생각\n" + pos;
+}
+if(est){
+  journalEl.textContent += "\n\n💖 자존감 메모\n" + est;
+}
     if(lifePlanModal){
       lifePlanModal.textContent = (state.lifePlans && state.lifePlans[dateStr]) ? state.lifePlans[dateStr] : "(기록 없음)";
     }
