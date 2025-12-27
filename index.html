@@ -229,13 +229,14 @@ footer{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
       <div class="item"><input type="checkbox" data-key="simplify"><div><b>생활 단순화: 불필요 1개 삭제</b></div></div>
       <div class="item"><input type="checkbox" data-key="sleep8"><div><b>8시간 이상 수면</b><div class="desc">10시 ~ 6시 목표</div></div></div>
 
-      <div class="item">
-        <input type="checkbox" data-key="accountbook">
-        <div>
-          <b>가계부 쓰기</b>
-          <div class="desc">오늘 지출 · 수입 간단 정리</div>
-        </div>
-      </div>
+   <div class="item">
+  <input type="checkbox" data-key="accountbook">
+  <div style="flex:1">
+    <b>가계부 쓰기</b>
+    <div class="desc">오늘 지출/수입 간단 메모(날짜별 저장)</div>
+    <textarea id="r_accountbookMemo" placeholder="예) -4500 커피 / +30000 용돈" style="margin-top:6px;min-height:70px"></textarea>
+  </div>
+</div>
 
       <div class="item"><input type="checkbox" data-key="computer"><div><b>컴 가까이 루틴 1회</b><div class="desc">25분 집중 + 기록</div></div></div>
       <div class="item"><input type="checkbox" data-key="lifeplan10"><div><b>인생 계획 10분</b></div></div>
